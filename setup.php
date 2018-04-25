@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
   
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '1.0.0');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '1.1.0');
 
 /**
  * Init hooks of the plugin.
@@ -57,7 +57,7 @@ function plugin_init_childticketmanager() {
  */
 function plugin_version_childticketmanager() {
    return [
-      'name'           => 'Gestionnaire de tickets enfant',
+      'name'           => __('Gestionnaire de tickets enfant', 'childticketmanager'),
       'version'        => PLUGIN_CHILDTICKETMANAGER_VERSION,
       'author'         => '<a href="http://www.synairgis.com">Synairgis</a>',
       'license'        => '<a href="../plugins/childticketmanager/LICENSE" target="_blank">GPLv3</a>',
@@ -78,7 +78,7 @@ function plugin_childticketmanager_check_prerequisites() {
       if (method_exists('Plugin', 'messageIncompatible')) {
          echo Plugin::messageIncompatible('core', '9.1');
       } else {
-         echo "This plugin requires GLPI >= 9.1";
+         echo __("Ce plugin requiert GLPI >= 9.1");
       }
       return false;
    }
@@ -98,7 +98,7 @@ function plugin_childticketmanager_check_config($verbose = false) {
    }
 
    if ($verbose) {
-      _e('Installed / not configured', 'childticketmanager');
+      __('Installé / non configuré', 'childticketmanager');
    }
    return false;
 }
