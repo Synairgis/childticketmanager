@@ -33,9 +33,9 @@ echo Html::hidden("ticket_id", ['value' => $ticket_id]);
 if($configs['childticketmanager_display_tmpl_link'] == 1 ) {
 	echo "&nbsp;";
 	echo "&nbsp;";
-	echo Html::submit("Voir gabarit", ['id' => 'childticketmanager_templ', 'style' => 'display:none']);
+	echo Html::submit( __("Voir gabarit", 'childticketmanager'), ['id' => 'childticketmanager_templ', 'style' => 'display:none']);
 }
 echo "&nbsp;";
 echo "&nbsp;";
-echo html::submit('Créer enfant', ['id' => 'childticketmanager_submit']);
+echo html::submit( __('Créer enfant', 'childticketmanager'), ['id' => 'childticketmanager_submit']);
 echo "<br>";
