@@ -10,7 +10,6 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	&& Session::haveRight("ticket", UPDATE)
 ) {
 	
-	$locale_childticketmanager  = __("Clone and link", "childticketmanager");
 	$locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
 	
 	$JS = <<<JAVASCRIPT
