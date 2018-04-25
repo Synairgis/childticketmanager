@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
   
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '1.1.0');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '1.1.1');
 
 /**
  * Init hooks of the plugin.
