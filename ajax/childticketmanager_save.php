@@ -19,7 +19,7 @@ $new_ticket_values = $template->predefined;
 $new_ticket_values['entities_id'] = $parent_ticket->getField('entities_id');
 
 // La date d'ouverture... si elle vient du template on n'a rien à faire et si 
-// le template le la définit pas, glpi prend la date courante alors dans tous les cas, on n'a rien à faire.
+// le template ne la définit pas, glpi prend la date courante alors dans tous les cas, on n'a rien à faire.
 // $new_ticket_values['date'] =
 
 $new_ticket_values['type'] = isset($new_ticket_values['type']) ? $new_ticket_values['type'] : $parent_ticket->getField('type');

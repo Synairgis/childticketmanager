@@ -13,6 +13,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	$locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
 	
 	$JS = <<<JAVASCRIPT
+		
 		childticketmanager_addCloneLink = function(callback) {
 	  	//only in edit form
 			if (getUrlParameter('id') == undefined) {
@@ -20,8 +21,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			}
 			
 			if ($("#create_child_ticket").length > 0) { return; }
-			
-			var ticket_html = "<i class='fa fa-ticket pointer' id='create_child_ticket'></i>";
+			// #3A5693
+			var ticket_html = "<i class='fa fa-ticket pointer' style='font-size: 20px; color: #3A5693' id='create_child_ticket'></i>";
 				
 			$("th:contains('$locale_linkedtickets')>span.fa")
 				.after(ticket_html);
@@ -50,7 +51,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 										'category': $("[id^='dropdown_childticketmanager_category']").val()
 									  },
 								success: function(response, opts) {
-									window.location.href = "ticket.form.php?id=" + response["new_ticket_id"];
+									displayAjaxMessageAfterRedirect();
+									// window.location.href = "ticket.form.php?id=" + response["new_ticket_id"];
 								}
 							});
 							
@@ -157,6 +159,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		
 		
 	});
+		
 JAVASCRIPT;
 	
 	echo $JS;
