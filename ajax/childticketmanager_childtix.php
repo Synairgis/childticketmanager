@@ -14,10 +14,12 @@ $configs = Config::getConfigurationValues('plugin:childticketmanager' , ['childt
 if($configs['childticketmanager_close_child'] == 1 && $_POST['tickets_status'] == 6)
 {
 	echo json_encode(updateChildTickets($_POST['tickets_status'], $_POST['tickets_id'], null));
+//	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
 }
 elseif($configs['childticketmanager_resolve_child'] == 1 && $_POST['tickets_status'] == 5)
 {
 	echo json_encode(updateChildTickets($_POST['tickets_status'], $_POST['tickets_id'], null));
+//	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
 }
 else
 {
@@ -60,6 +62,9 @@ function updateChildTickets($status, $current, $parent)
 		if($parent_ticket->fields['solvedate'] == null)
 			$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 	}
+	
+	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
+	
 	
 	$parent_ticket->updateInDB($updatedFields, $oldValues);
 	return array_merge( [$current], $retour );

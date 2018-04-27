@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: childticketmanager\n"
-"POT-Creation-Date: 2018-04-25 13:14-0400\n"
-"PO-Revision-Date: 2018-04-25 13:15-0400\n"
+"POT-Creation-Date: 2018-04-26 14:32-0400\n"
+"PO-Revision-Date: 2018-04-26 14:32-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_CA\n"
@@ -22,6 +22,14 @@ msgstr "Voir gabarit"
 #: ajax/childticketmanager.php:40
 msgid "Créer enfant"
 msgstr "Créer enfant"
+
+#: ajax/childticketmanager_childtix.php:64
+msgid "Ticket "
+msgstr "Ticket "
+
+#: ajax/childticketmanager_childtix.php:64
+msgid " mis à jour"
+msgstr " mis à jour"
 
 #: config.form.php:14 front/config.form.php:14 inc/config.class.php:12
 msgid "Tickets enfants"
