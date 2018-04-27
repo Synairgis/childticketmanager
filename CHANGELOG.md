@@ -1,3 +1,9 @@
+<a name="1.2.2"></a>
+
+### Bugfix
+
+- Fixed a bug with the redirection after creating a ticket
+
 <a name="1.2.1"></a>
 
 ## 1.2.1 (2018-04-27)
