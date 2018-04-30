@@ -24,7 +24,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			
 			if ($("#create_child_ticket").length > 0) { return; }
 			// #3A5693
-			var ticket_html = "<i class='fa fa-ticket pointer' style='font-size: 20px; color: #3A5693' id='create_child_ticket'></i>";
+			var ticket_html = "<i class='fa fa-ticket pointer' style='font-size: 20px;' id='create_child_ticket'></i>";
 				
 			$("th:contains('$locale_linkedtickets')>span.fa")
 				.after(ticket_html);
