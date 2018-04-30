@@ -11,7 +11,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 ) {
 	
 	$locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
-//	Config::getConfigurationValues('core', ['backcreated']);
+	$redirect = Config::getConfigurationValues('core', ['backcreated']);
+	$redirect = $redirect['backcreated'];
 	
 	$JS = <<<JAVASCRIPT
 		
@@ -52,8 +53,10 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 										'category': $("[id^='dropdown_childticketmanager_category']").val()
 									  },
 								success: function(response, opts) {
-									// displayAjaxMessageAfterRedirect();
-									window.location.href = "ticket.form.php?id=" + response["new_ticket_id"];
+									if($redirect == 1)
+										window.location.href = "ticket.form.php?id=" + response["new_ticket_id"];
+									else
+										displayAjaxMessageAfterRedirect();
 								}
 							});
 							
