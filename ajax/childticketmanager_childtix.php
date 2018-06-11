@@ -11,12 +11,12 @@ include ("../../../inc/includes.php");
 $configs = Config::getConfigurationValues('plugin:childticketmanager' , ['childticketmanager_close_child', 'childticketmanager_resolve_child', 'childticketmanager_hide_tmpl_link']);
 
 
-if($configs['childticketmanager_close_child'] == 1 && $_POST['tickets_status'] == 6)
+if($configs['childticketmanager_close_child'] == 1 && $_POST['tickets_status'] == CommonITILObject::CLOSED)
 {
 	echo json_encode(updateChildTickets($_POST['tickets_status'], $_POST['tickets_id'], null));
 //	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
 }
-elseif($configs['childticketmanager_resolve_child'] == 1 && $_POST['tickets_status'] == 5)
+elseif($configs['childticketmanager_resolve_child'] == 1 && $_POST['tickets_status'] == CommonITILObject::SOLVED)
 {
 	echo json_encode(updateChildTickets($_POST['tickets_status'], $_POST['tickets_id'], null));
 //	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
@@ -31,7 +31,7 @@ function updateChildTickets($status, $current, $parent)
 	global $DB;
 	$children = getChildTickets($current);
 	$retour = [];
-	
+
 	if($children != null)
 	{
 		foreach($children as $tix)
@@ -49,24 +49,29 @@ function updateChildTickets($status, $current, $parent)
 
 	$parent_ticket->fields['status'] = $status;
 	
-	if($status == 5) 
+	if($status == CommonITILObject::SOLVED) 
 	{
 		$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 		if($parent_ticket->fields['solution'] == null && $parent != null)
 			$parent_ticket->fields['solution'] = "Résolu par le biais du billet " . $parent;
+
+		$mailtype = "solved";
 	}
-	elseif($status == 6)
+	elseif($status == CommonITILObject::CLOSED)
 	{
 		$parent_ticket->fields['closedate'] = $currentDate->format("Y-m-d H:i:s");
 
 		if($parent_ticket->fields['solvedate'] == null)
 			$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
+
+		$mailtype = "closed";
 	}
 	
-	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
-	
-	
 	$parent_ticket->updateInDB($updatedFields, $oldValues);
+	
+	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
+	NotificationEvent::raiseEvent($mailtype, $parent_ticket);
+
 	return array_merge( [$current], $retour );
 }
 
