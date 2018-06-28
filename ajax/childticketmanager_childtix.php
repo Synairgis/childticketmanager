@@ -44,6 +44,14 @@ function updateChildTickets($status, $current, $parent)
 	$updatedFields = ['status', 'solvedate', 'closedate', 'solution'];
 	$oldValues = [];
 
+	if($parent_ticket->fields['status'] >= $status)
+		return $retour;
+
+	$parent_ticket->input = [];
+	$parent_ticket->updates = [];
+
+	Plugin::doHook("pre_item_update", $parent_ticket);
+
 	foreach($updatedFields as $fld)
 		$oldValues[$fld] = $parent_ticket->fields[$fld];
 
@@ -68,6 +76,8 @@ function updateChildTickets($status, $current, $parent)
 	}
 	
 	$parent_ticket->updateInDB($updatedFields, $oldValues);
+
+	Plugin::doHook("item_update", $parent_ticket);
 	
 	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
 	NotificationEvent::raiseEvent($mailtype, $parent_ticket);

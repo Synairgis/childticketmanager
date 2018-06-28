@@ -94,8 +94,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			
 			var activeTab = childticketmanager_getActiveTabId();
 			
-			// ui-id-3 = Onglet Ticket. Dans ce cas, la valeur du statut Donc, on doit aller 
-			// chercher la valeur du statut à appliquer dans la zone de liste sur l'interface
+			// ui-id-3 = Onglet Ticket. Dans ce cas, la valeur du statut est définie par la zone 
+			// de liste sur l'interface
 			
 			// ui-id-4 = Onglet Traitement du ticket. Dans ce cas, la valeur du statut arrive
 			// en data dans l'événement.
@@ -109,7 +109,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 				var status = e.data.ticketStatus || opts.ticketStatus;
 			else
 				var status = -1;
-			
+
 			var childrenUpdated = e.data.childrenUpdated || opts.childrenUpdated;
 
 			if(!childrenUpdated && (status == 5 || status == 6) )
