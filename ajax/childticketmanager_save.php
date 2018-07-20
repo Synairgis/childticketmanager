@@ -41,12 +41,28 @@ $new_ticket_values['name'] = isset($new_ticket_values['name']) ? $new_ticket_val
 $new_ticket_values['content'] = isset($new_ticket_values['content']) ? $new_ticket_values['content'] : $parent_ticket->getField('content');
 
 foreach($new_ticket_values as $field => $val)
-	$new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
+{
+	if($field != '_documents_id')
+		$new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
+}
 
 $new_ticket->add(  $new_ticket_values  );
 
 $relation = new Ticket_Ticket();
 
 $relation->add( ['tickets_id_1' => $new_ticket->getID(), 'tickets_id_2' => $parent_ticket->getID(), 'link' => 3] );
+
+if( isset( $new_ticket_values['_documents_id']  )   )
+{
+	foreach($new_ticket_values['_documents_id'] as $docID)
+	{
+		$docItem = new Document_Item();
+		$docItem->add([
+			'documents_id' => $docID,
+			'itemtype' => 'Ticket',
+			'items_id' => $new_ticket->getID()
+		]);
+	}
+}
 
 echo json_encode(["new_ticket_id" => $new_ticket->getID()]);
