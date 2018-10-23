@@ -23,11 +23,21 @@ $JS = <<<JAVASCRIPT
 
 JAVASCRIPT;
 
+if($ticket->fields["type"] == 1) // incident
+	$cond = "`is_incident`='1'";
+elseif($ticket->fields["type"] == 2) // Demande
+	$cond = "`is_request`='1'";
+else 
+	$cond = "";
+
 ITILCategory::dropdown([
 	'comments' => false, 
 	'name' => 'childticketmanager_category',
+	'condition' => $cond,
+	'entity' => $ticket->fields["entities_id"],
 	'on_change' => $JS
 ]);
+
 echo Html::hidden("ticket_id", ['value' => $ticket_id]);
 
 if($configs['childticketmanager_display_tmpl_link'] == 1 ) {

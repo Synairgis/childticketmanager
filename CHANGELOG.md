@@ -1,3 +1,9 @@
+<a name="1.2.5"></a>
+
+### Bugfix
+
+- Fixed a glitch in the dropdown that made it display categories that should have been forbidden
+
 <a name="1.2.2"></a>
 
 ### Bugfix

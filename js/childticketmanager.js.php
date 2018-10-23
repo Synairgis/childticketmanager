@@ -88,7 +88,58 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	childticketmanager_getActiveTabId = function(){
 		return $("div[id^='tabs'] > ul > li[class*='ui-tabs-active ui-state-active']")[0].firstChild.id;
 	};
-		
+	
+	childticketmanager_change = function(e){
+
+
+		$.ajax({
+			url: '../plugins/childticketmanager/ajax/childticketmanager_getcondition.php',
+			method: 'post',
+			datatype: 'json',
+			data: {
+				type: $(this).val()
+			},
+			success: function(response, opts)
+			{
+				
+				var param = {
+							itemtype: "ITILCategory",
+							display_emptychoice: 1,
+							displaywith: [],
+							emptylabel: "-----",
+							condition: response,
+							used: [],
+							toadd: [],
+							entity_restrict: "2",
+							permit_select_parent: 0,
+							specific_tags: [],
+							// searchText: term,
+							page_limit: 100 // page size
+							// page: page, // page number
+						};
+
+				$.ajax({
+					url: '../ajax/getDropdownValue.php',
+					method: 'post',
+					datatype: 'json',
+					data: param,
+					success: function(response, opts){
+						console.log("getDropdownValue réponse");
+						console.log(JSON.parse(response));
+
+						$("input[name='childticketmanager_category']").select2({
+							dropdownAutoWidth: true,
+							data: function(){
+								return JSON.parse(response);
+							}
+						});
+
+					}
+				});
+			}
+		});
+	};
+
 	childticketmanager_submit = function(e, opts){
 			opts = opts || {};
 			
@@ -146,6 +197,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		
 		$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
 		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
+
+		$("select[id^='dropdown_type']").on("change", childticketmanager_change);
 			
 		
 		$(document).ajaxComplete(function(event, request, settings) {
