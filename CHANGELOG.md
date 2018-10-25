@@ -1,3 +1,9 @@
+<a name="1.2.6"></a>
+
+### Bugfix
+
+- Fixed a glitch with the binding of a "change" event and removed some unused debugging code
+
 <a name="1.2.5"></a>
 
 ### Bugfix
