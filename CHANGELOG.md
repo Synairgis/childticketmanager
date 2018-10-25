@@ -3,6 +3,7 @@
 ### Bugfix
 
 - Fixed a glitch with the binding of a "change" event and removed some unused debugging code
+- Fixed a glitch that desynched the list's filter if a user changed the type of ticket while the list is hidden
 
 <a name="1.2.5"></a>
 
