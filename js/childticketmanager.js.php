@@ -124,9 +124,6 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 					datatype: 'json',
 					data: param,
 					success: function(response, opts){
-						console.log("getDropdownValue réponse");
-						console.log(JSON.parse(response));
-
 						$("input[name='childticketmanager_category']").select2({
 							dropdownAutoWidth: true,
 							data: function(){
@@ -196,10 +193,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		});
 		
 		$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
-		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
-
-		$("select[id^='dropdown_type']").on("change", childticketmanager_change);
-			
+		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);			
 		
 		$(document).ajaxComplete(function(event, request, settings) {
 			
@@ -215,6 +209,10 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		});
 		
 		
+	});
+
+	$(window).load(function() {
+		$("select[id^='dropdown_type']").on("change", childticketmanager_change);
 	});
 		
 JAVASCRIPT;
