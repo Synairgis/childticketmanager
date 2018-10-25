@@ -78,6 +78,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 							});
 							
 						});
+
+						$("select[id^='dropdown_type']").trigger("change");
 					}
 				});
 		   	}));
@@ -206,14 +208,13 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 					$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
 				}
 			}
+
+			$("select[id^='dropdown_type']").on("change", childticketmanager_change);
 		});
 		
 		
 	});
 
-	$(window).load(function() {
-		$("select[id^='dropdown_type']").on("change", childticketmanager_change);
-	});
 		
 JAVASCRIPT;
 	
