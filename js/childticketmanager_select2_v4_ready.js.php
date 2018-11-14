@@ -92,16 +92,17 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	childticketmanager_getActiveTabId = function(){
 		return $("div[id^='tabs'] > ul > li[class*='ui-tabs-active ui-state-active']")[0].firstChild.id;
 	};
-
+	
 	childticketmanager_change = function(e){
-		
+		let urlParams = new URLSearchParams(window.location.search);
+
 		$.ajax({
 			url: '../plugins/childticketmanager/ajax/childticketmanager_getcondition.php',
 			method: 'post',
 			datatype: 'json',
 			data: {
 				type: $(this).val(),
-				id: getUrlParameter('id')
+				id: urlParams.get('id')
 			},
 			success: function(response, opts)
 			{
@@ -123,10 +124,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 							// page: page, // page number
 						};
 
-				// console.log({$testing});
-
-				$("input[name='childticketmanager_category']").select2({
-
+				$("select[name='childticketmanager_category']").select2({
 					width: '',
 		            minimumInputLength: 0,
 		            quietMillis: 100,
@@ -145,8 +143,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			                    page: params.page || 1, // page number
 			                	});
 			               	},
-			               	results: function (data, params) {
-			               		console.log(data);
+			               	processResults: function (data, params) {
 			               		params.page = params.page || 1;
 			                 	var more = (data.count >= 100);
 
@@ -160,49 +157,77 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 
 
 
-		            },
-		            initSelection: function (element, callback) {
-                           var id=$(element).val();
-                           var defaultid = '0';
-                           if (id !== '') {
-                              // No ajax call for first item
-                              if (id === defaultid) {
-                                var data = {id: 0,
-                                          text: "-----"};
-                                 callback(data);
-                              } else {
-                                 $.ajax('../../ajax/getDropdownValue.php', {
-                                 data: function (params) {
-				                	query = params;
-				                	return $.extend({}, my_param, {
-				                    searchText: params.term,
-				                    page_limit: 100, // page size
-				                    page: params.page || 1, // page number
-				                	});
-				               	},
-                                 dataType: 'json',
-                                 type: 'POST',
-                                 }).done(function(data) { callback(data); });
-                              }
-                           }
+		            }
+		            templateResult: templateResult,
+            		templateSelection: templateSelection
 
-                        },
-                        formatResult: function(result, container, query, escapeMarkup) {
-                           container.attr('title', result.title);
-                           var markup=[];
-                           window.Select2.util.markMatch(result.text, query.term, markup, escapeMarkup);
-                           if (result.level) {
-                              var a='';
-                              var i=result.level;
-                              while (i>1) {
-                                 a = a+'&nbsp;&nbsp;&nbsp;';
-                                 i=i-1;
-                              }
-                              return a+'&raquo;'+markup.join('');
-                           }
-                           return markup.join('');
-                        }
-				});
+				}).bind('setValue', function(e, value) {
+		            $.ajax('../../ajax/getDropdownValue.php', {
+		               data: $.extend({}, my_param, {
+		                  _one_id: value,
+		               }),
+		               dataType: 'json',
+		               type: 'POST',
+		            }).done(function(data) {
+
+		               var iterate_options = function(options, value) {
+		                  var to_return = false;
+		                  $.each(options, function(index, option) {
+		                     if (option.hasOwnProperty('id')
+		                         && option.id == value) {
+		                        to_return = option;
+		                        return false; // act as break;
+		                     }
+
+		                     if (option.hasOwnProperty('children')) {
+		                        to_return = iterate_options(option.children, value);
+		                     }
+		                  });
+
+		                  return to_return;
+		               };
+
+		               var option = iterate_options(data.results, value);
+		               if (option !== false) {
+		                  var newOption = new Option(option.text, option.id, true, true);
+		                   $("select[name='childticketmanager_category']").append(newOption).trigger('change');
+		               }
+		            });
+		         });
+
+
+
+				// $.ajax({
+				// 	url: '../ajax/getDropdownValue.php',
+				// 	method: 'post',
+				// 	datatype: 'json',
+				// 	data: param,
+				// 	success: function(response, opts){
+
+				// 		var test = $("select[name='childticketmanager_category']").attr("id");
+
+				// 		// console.log(  response );
+
+				// 		 // $("select[id^='dropdown_childticketmanager_category']").select2({
+				// 		 // 	dropdownAutoWidth: true,
+				// 			// data: function(){
+				// 			// 	console.log("slfhjsdlkfjsdlfkjflksdjflksd");
+				// 			// 	return JSON.parse(response);
+				// 			// }
+				// 		 // });
+
+
+
+				// 		// $("select[name='childticketmanager_category']").select2({
+				// 		// $("#" + test).select2({
+				// 		// 	dropdownAutoWidth: true,
+				// 		// 	data: function(){
+				// 		// 		return JSON.parse(response);
+				// 		// 	}							
+				// 		// });
+
+				// 	}
+				// });
 			}
 		});
 	};

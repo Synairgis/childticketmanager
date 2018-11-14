@@ -2,11 +2,24 @@
 
 include ("../../../inc/includes.php");
 
+$retour = array();
+
+$ticket = new Ticket();
+$ticket->getFromDB($_POST['id']);
+
+
 if($_POST['type'] == Ticket::INCIDENT_TYPE)
-	echo sha1("`is_incident`='1'");
+	$condition = "`is_incident`='1'";
 elseif($_POST['type'] == Ticket::DEMAND_TYPE)
-	echo sha1("`is_request`='1'");
+	$condition = "`is_request`='1'";
 else
-	echo sha1("");
+	$condition = "";
+
+$retour['condition'] = sha1($condition);
+$_SESSION['glpicondition'][$retour['condition']] = $condition;
+
+$retour['entity'] = $ticket->fields["entities_id"];
+
+echo json_encode($retour);
 
 ?>

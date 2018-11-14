@@ -43,7 +43,9 @@ $new_ticket_values['content'] = isset($new_ticket_values['content']) ? $new_tick
 foreach($new_ticket_values as $field => $val)
 {
 	if($field != '_documents_id')
-		$new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
+		$new_ticket_values[$field] = $DB->escape($val);
+	
+		// $new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
 }
 
 $new_ticket->add(  $new_ticket_values  );
