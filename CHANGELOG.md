@@ -1,3 +1,8 @@
+<a name="1.2.7"></a>
+
+- Fixed a glitch that prevented the list from correctly updating if ticket type had not previously been opened in browser (because condition was
+  not yet saved in session)
+
 <a name="1.2.6"></a>
 
 ### Bugfix
