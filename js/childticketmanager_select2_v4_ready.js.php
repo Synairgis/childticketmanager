@@ -157,7 +157,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 
 
 
-		            }
+		            },
 		            templateResult: templateResult,
             		templateSelection: templateSelection
 
