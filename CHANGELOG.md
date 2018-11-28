@@ -1,3 +1,7 @@
+<a name="2.0.0"></a>
+
+- Made the plugin compatible with GLPI 9.3.X
+
 <a name="1.2.7"></a>
 
 - Fixed a glitch that prevented the list from correctly updating if ticket type had not previously been opened in browser (because condition was

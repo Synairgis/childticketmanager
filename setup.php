@@ -62,7 +62,7 @@ function plugin_version_childticketmanager() {
       'author'         => '<a href="http://www.synairgis.com">Synairgis</a>',
       'license'        => '<a href="../plugins/childticketmanager/LICENSE" target="_blank">GPLv3</a>',
       'homepage'       => '',
-      'minGlpiVersion' => '9.1'
+      'minGlpiVersion' => '9.3'
    ];
 }
 
@@ -74,11 +74,11 @@ function plugin_version_childticketmanager() {
  */
 function plugin_childticketmanager_check_prerequisites() {
    // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION, '9.1', 'lt')) {
+   if (version_compare(GLPI_VERSION, '9.3', 'lt')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.1');
+         echo Plugin::messageIncompatible('core', '9.3');
       } else {
-         echo __("Ce plugin requiert GLPI >= 9.1");
+         echo __("Ce plugin requiert GLPI >= 9.3");
       }
       return false;
    }
