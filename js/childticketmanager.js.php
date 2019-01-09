@@ -94,6 +94,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	};
 
 	childticketmanager_change = function(e){
+
+		$("select[name='childticketmanager_category']").val(0);
 		
 		$.ajax({
 			url: '../plugins/childticketmanager/ajax/childticketmanager_getcondition.php',
@@ -211,15 +213,32 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			// Dans tous les autres cas, on met un statut à -1. De toute façon, on n'a rien à faire
 			// si on se trouve sur un autre onglet que les deux spécifiés plus haut. 
 			
-			if(activeTab == "ui-id-3")
-				var status = $("[id^='dropdown_status']").val();
-			else if(activeTab == "ui-id-4")
-				var status = e.data.ticketStatus || opts.ticketStatus;
-			else
-				var status = -1;
+			// if(activeTab == "ui-id-4")
+			// {
+			// 	var status = $("[id^='dropdown_status']").val();
+			// }
+			// else if(activeTab == "ui-id-5")
+			// {
+			// 	if(typeof e.data.ticketStatus != "undefined" )
+			// 		var status = e.data.ticketStatus;
+			// 	else
+			// 		var status = opts.ticketStatus;
+			// }
+			// else
+			// 	var status = -1;
+
+			var status = $("[id^='dropdown_status']").val()  ||  e.data.ticketStatus || opts.ticketStatus;
+
+			if (typeof status == "undefined")
+				status = -1;
+
+			var childrenUpdated = null;
 
 			var childrenUpdated = e.data.childrenUpdated || opts.childrenUpdated;
 
+			if (typeof childrenUpdated == "undefined")
+				childrenUpdated = false;
+			
 			if(!childrenUpdated && (status == 5 || status == 6) )
 			{
 				e.preventDefault();
@@ -247,12 +266,18 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		
 		$(".glpi_tabs").on("tabsload", function(event, ui) {
 			childticketmanager_addCloneLink(childticketmanager_bindClick);
+
+			// Quand on est sur la page du ticket et qu'on le résout/ferme, le bouton s'appelle "update".
+			// Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
+			// C'est pour ça qu'on doit avoir deux bindings pour la même chose
 			
 			$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
+			$("input[name='add']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
 			$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
 		});
-		
+
 		$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
+		$("input[name='add']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
 		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);			
 		
 		$(document).ajaxComplete(function(event, request, settings) {
@@ -263,6 +288,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 				if(params[0] == "action=viewsubitem" && params[1] == "type=Solution")
 				{
 					$("input[name='update']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
+					$("input[name='add']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
 					$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
 				}
 			}
