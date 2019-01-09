@@ -1,3 +1,8 @@
+<a name="2.0.1"></a>
+
+- Fixed incorrect binding that kept cascading resolution/closing of tickets from working
+- Reset list value when the ticket type changes to avoid problems with potentially impossible combinations 
+
 <a name="2.0.0"></a>
 
 - Made the plugin compatible with GLPI 9.3.X
