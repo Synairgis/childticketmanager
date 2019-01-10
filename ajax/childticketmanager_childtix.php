@@ -41,7 +41,7 @@ function updateChildTickets($status, $current, $parent)
 	$currentDate = new datetime();
 	$parent_ticket = new Ticket();
 	$parent_ticket->getFromDB($current);
-	$updatedFields = ['status', 'solvedate', 'closedate', 'solution'];
+	$updatedFields = ['status', 'solvedate', 'closedate'];
 	$oldValues = [];
 
 	if($parent_ticket->fields['status'] >= $status)
@@ -60,8 +60,31 @@ function updateChildTickets($status, $current, $parent)
 	if($status == CommonITILObject::SOLVED) 
 	{
 		$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
-		if($parent_ticket->fields['solution'] == null && $parent != null)
-			$parent_ticket->fields['solution'] = "Résolu par le biais du billet " . $parent;
+
+		if( $parent != null)
+		{
+			$solution = new ITILSolution();
+
+			$fields = [
+				'itemtype' => 'Ticket',
+				'items_id' => $parent_ticket->fields['id'],
+				'solutiontypes_id' => 0,
+				'solutiontype_name' => null,
+				'content' => "Résolu par le biais du billet " . $parent,
+				'date_creation' => $currentDate->format("Y-m-d H:i:s"),
+				'date_mod' => $currentDate->format("Y-m-d H:i:s"),
+				'date_approval' => null,
+				'users_id' => Session::getLoginUserID(),
+				'user_name' => null,
+				'users_id_editor' => 0,
+				'users_id_approval' => $parent_ticket->fields['users_id_recipient'],
+				'user_name_approval' => null,
+				'status' => 2,
+				'ticketfollowups_id' => null
+			];
+
+			$solution->add($fields);
+		}
 
 		$mailtype = "solved";
 	}
@@ -73,9 +96,9 @@ function updateChildTickets($status, $current, $parent)
 			$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 
 		$mailtype = "closed";
+		$parent_ticket->updateInDB($updatedFields, $oldValues);
 	}
-	
-	$parent_ticket->updateInDB($updatedFields, $oldValues);
+
 
 	Plugin::doHook("item_update", $parent_ticket);
 	

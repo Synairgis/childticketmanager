@@ -1,3 +1,8 @@
+<a name="2.0.2"></a>
+
+- Made plugin compatible with new GLPI 9.3 mecanics that stored ticket solution not as a field, but as an entry in a separate table
+- Fixed a glitch that broke cascading resolution/closing of tickets if you went from main ticket page to ticket followup page
+
 <a name="2.0.1"></a>
 
 - Fixed incorrect binding that kept cascading resolution/closing of tickets from working

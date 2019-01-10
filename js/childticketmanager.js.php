@@ -204,30 +204,18 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			
 			var activeTab = childticketmanager_getActiveTabId();
 			
-			// ui-id-3 = Onglet Ticket. Dans ce cas, la valeur du statut est définie par la zone 
-			// de liste sur l'interface
+			/*
+			* Si la liste dropdown_status est visible, c'est qu'on est sur la page d'édition du ticket
+			* alors on doit prendre la valeur de cette liste pour déterminer le statut. Si elle est invisible
+			* c'est qu'on est sur la page de traitement du ticket et dans ce cas, le statut est déterminé
+			* par ce que l'on reçoit dans les paramètres de l'événement.
+			*/
 			
-			// ui-id-4 = Onglet Traitement du ticket. Dans ce cas, la valeur du statut arrive
-			// en data dans l'événement.
-			
-			// Dans tous les autres cas, on met un statut à -1. De toute façon, on n'a rien à faire
-			// si on se trouve sur un autre onglet que les deux spécifiés plus haut. 
-			
-			// if(activeTab == "ui-id-4")
-			// {
-			// 	var status = $("[id^='dropdown_status']").val();
-			// }
-			// else if(activeTab == "ui-id-5")
-			// {
-			// 	if(typeof e.data.ticketStatus != "undefined" )
-			// 		var status = e.data.ticketStatus;
-			// 	else
-			// 		var status = opts.ticketStatus;
-			// }
-			// else
-			// 	var status = -1;
+			if(  $("[id^='dropdown_status']").is(":visible")  )
+				var status = $("[id^='dropdown_status']").val();
+			else
+				var status = e.data.ticketStatus || opts.ticketStatus;
 
-			var status = $("[id^='dropdown_status']").val()  ||  e.data.ticketStatus || opts.ticketStatus;
 
 			if (typeof status == "undefined")
 				status = -1;
@@ -237,8 +225,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			var childrenUpdated = e.data.childrenUpdated || opts.childrenUpdated;
 
 			if (typeof childrenUpdated == "undefined")
-				childrenUpdated = false;
-			
+				childrenUpdated = false;			
+
 			if(!childrenUpdated && (status == 5 || status == 6) )
 			{
 				e.preventDefault();
@@ -272,12 +260,12 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			// C'est pour ça qu'on doit avoir deux bindings pour la même chose
 			
 			$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
-			$("input[name='add']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
+			$("input[name='add']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
 			$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
 		});
 
 		$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
-		$("input[name='add']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
+		$("input[name='add']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
 		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);			
 		
 		$(document).ajaxComplete(function(event, request, settings) {
@@ -287,7 +275,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 				var params = settings.data.split("&");
 				if(params[0] == "action=viewsubitem" && params[1] == "type=Solution")
 				{
-					$("input[name='update']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
+					$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
 					$("input[name='add']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
 					$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
 				}
