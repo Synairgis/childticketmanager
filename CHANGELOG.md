@@ -1,3 +1,8 @@
+<a name="2.0.3"></a>
+
+- Added a verification to make sure we're actually on page ticket.form.php before doing anything
+- Minor code cleanup
+
 <a name="2.0.2"></a>
 
 - Made plugin compatible with new GLPI 9.3 mecanics that stored ticket solution not as a field, but as an entry in a separate table

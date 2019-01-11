@@ -89,10 +89,6 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			
 		});
 	
-	childticketmanager_getActiveTabId = function(){
-		return $("div[id^='tabs'] > ul > li[class*='ui-tabs-active ui-state-active']")[0].firstChild.id;
-	};
-
 	childticketmanager_change = function(e){
 
 		$("select[name='childticketmanager_category']").val(0);
@@ -201,9 +197,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 
 	childticketmanager_submit = function(e, opts){
 			opts = opts || {};
-			
-			var activeTab = childticketmanager_getActiveTabId();
-			
+						
 			/*
 			* Si la liste dropdown_status est visible, c'est qu'on est sur la page d'édition du ticket
 			* alors on doit prendre la valeur de cette liste pour déterminer le statut. Si elle est invisible
@@ -250,6 +244,14 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		
 	$(document).ready(function() {
 		
+		var pageActu = window.location.pathname.split("/").slice(-1)[0];
+
+		// Si on ne se trouve pas sur la page de gestion des tickets, on ne doit rien faire afin de ne
+		// pas interférer avec le bon fonctionnement de GLPI avec des binding erronés
+
+		if (pageActu != "ticket.form.php")
+			return;
+
 		childticketmanager_addCloneLink(childticketmanager_bindClick);
 		
 		$(".glpi_tabs").on("tabsload", function(event, ui) {
