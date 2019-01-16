@@ -1,3 +1,7 @@
+<a name="2.0.4"></a>
+
+- Correction pour régler le bogue d'insertion d'image lors de l'ajout d'un suivi dans un ticket
+
 <a name="2.0.3"></a>
 
 - Added a verification to make sure we're actually on page ticket.form.php before doing anything

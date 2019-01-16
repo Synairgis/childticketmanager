@@ -272,7 +272,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		
 		$(document).ajaxComplete(function(event, request, settings) {
 			
-			if(typeof settings.data != "undefined")
+			if(typeof(settings.data) != "undefined" && typeof(settings.data) != "object")
 			{
 				var params = settings.data.split("&");
 				if(params[0] == "action=viewsubitem" && params[1] == "type=Solution")
