@@ -15,8 +15,14 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	$redirect = $redirect['backcreated'];
 
 	$testing = GLPI_ROOT;
+	$version = GLPI_VERSION;
 	
 	$JS = <<<JAVASCRIPT
+		
+		var glpi_version = "{$version}";
+        glpi_version = glpi_version.replace(/\./g, "") + "000";
+        glpi_version = glpi_version.substr(0,3);
+
 		
 		childticketmanager_addCloneLink = function(callback) {
 	  	//only in edit form
@@ -89,7 +95,14 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			
 		});
 	
-	childticketmanager_change = function(e){
+
+	/********************************************************
+    * Fonction d'événement qui rafraîchi la liste du plugin
+    * lorsque la catégorie du ticket change de incident
+    * à demande pour GLPI 9.3.x
+    *********************************************************/
+
+	childticketmanager_change_93 = function(e){
 
 		$("select[name='childticketmanager_category']").val(0);
 		
@@ -195,6 +208,132 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 		});
 	};
 
+	/********************************************************
+    * Fonction d'événement qui rafraîchi la liste du plugin
+    * lorsque la catégorie du ticket change de incident
+    * à demande pour GLPI 9.2.x
+    *********************************************************/
+
+	childticketmanager_change_92 = function(e){
+		
+		$.ajax({
+			url: '../plugins/childticketmanager/ajax/childticketmanager_getcondition.php',
+			method: 'post',
+			datatype: 'json',
+			data: {
+				type: $(this).val(),
+				id: getUrlParameter('id')
+			},
+			success: function(response, opts)
+			{
+				let result = JSON.parse(response);
+
+				var my_param = {
+							itemtype: "ITILCategory",
+							display_emptychoice: 1,
+							displaywith: [],
+							emptylabel: "-----",
+							condition: result.condition,
+							used: [],
+							toadd: [],
+							entity_restrict: result.entity,
+							permit_select_parent: 0,
+							specific_tags: [],
+							// searchText: term,
+							page_limit: 100 // page size
+							// page: page, // page number
+						};
+
+				// console.log({$testing});
+
+				$("input[name='childticketmanager_category']").select2({
+
+					width: '',
+		            minimumInputLength: 0,
+		            quietMillis: 100,
+		            dropdownAutoWidth: true,
+		            minimumResultsForSearch: 10,
+		            ajax: {
+
+		            		url: '../../ajax/getDropdownValue.php',
+			            	dataType: 'json',
+			               	type: 'POST',
+			               	data: function (params) {
+			                	query = params;
+			                	return $.extend({}, my_param, {
+			                    searchText: params.term,
+			                    page_limit: 100, // page size
+			                    page: params.page || 1, // page number
+			                	});
+			               	},
+			               	results: function (data, params) {
+			               		console.log(data);
+			               		params.page = params.page || 1;
+			                 	var more = (data.count >= 100);
+
+			                	return {
+			               			results: data.results,
+			                    	pagination: {
+			                        	more: more
+			                		}
+			                  	};
+			               }
+
+
+
+		            },
+		            initSelection: function (element, callback) {
+                           var id=$(element).val();
+                           var defaultid = '0';
+                           if (id !== '') {
+                              // No ajax call for first item
+                              if (id === defaultid) {
+                                var data = {id: 0,
+                                          text: "-----"};
+                                 callback(data);
+                              } else {
+                                 $.ajax('../../ajax/getDropdownValue.php', {
+                                 data: function (params) {
+				                	query = params;
+				                	return $.extend({}, my_param, {
+				                    searchText: params.term,
+				                    page_limit: 100, // page size
+				                    page: params.page || 1, // page number
+				                	});
+				               	},
+                                 dataType: 'json',
+                                 type: 'POST',
+                                 }).done(function(data) { callback(data); });
+                              }
+                           }
+
+                        },
+                        formatResult: function(result, container, query, escapeMarkup) {
+                           container.attr('title', result.title);
+                           var markup=[];
+                           window.Select2.util.markMatch(result.text, query.term, markup, escapeMarkup);
+                           if (result.level) {
+                              var a='';
+                              var i=result.level;
+                              while (i>1) {
+                                 a = a+'&nbsp;&nbsp;&nbsp;';
+                                 i=i-1;
+                              }
+                              return a+'&raquo;'+markup.join('');
+                           }
+                           return markup.join('');
+                        }
+				});
+			}
+		});
+	};
+
+
+
+
+
+
+
 	childticketmanager_submit = function(e, opts){
 			opts = opts || {};
 						
@@ -283,7 +422,10 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 				}
 			}
 
-			$("select[id^='dropdown_type']").not('.change-bound').on('change', childticketmanager_change).addClass('change-bound');
+			if(glpi_version < 930)
+				$("select[id^='dropdown_type']").not('.change-bound').on('change', childticketmanager_change_92).addClass('change-bound');
+			else	
+				$("select[id^='dropdown_type']").not('.change-bound').on('change', childticketmanager_change_93).addClass('change-bound');
 		});
 		
 		

@@ -45,16 +45,14 @@
       <lang>fr_CA</lang>
    </langs>
    <license>GPL V3+</license>
-   <!--tags>
+   <tags>
       <en>
-         <tag>One tag</tag>
-         <tag>Another tag</tag>
+         <tag>Ticket</tag>
       </en>
       <fr>
-         <tag>Un tag</tag>
-         <tag>Un autre tag</tag>
+         <tag>Ticket</tag>
       </fr>
-   </tags-->
+   </tags>
    <!--screenshots>
       <screenshot>https://github.com/pluginsGLPI/fields/raw/master/screenshot.png</screenshot>
       <screenshot>https://github.com/pluginsGLPI/fields/raw/master/screenshot2.png</screenshot>
