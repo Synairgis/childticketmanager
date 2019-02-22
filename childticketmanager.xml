@@ -3,7 +3,7 @@
    <key>childticketmanager</key>
    <!-- stable, beta, development, alpha, ... -->
    <state>stable</state>
-   <logo>https://raw.githubusercontent.com/pluginsGLPI/childticketmanager/master/{LNAME}.png</logo>
+   <logo>https://raw.githubusercontent.com/Synairgis/childticketmanager/master/logo.png</logo>
    <description>
       <short>
          <!-- Add as many lang tag you want -->
