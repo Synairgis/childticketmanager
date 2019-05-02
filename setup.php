@@ -46,12 +46,13 @@ function plugin_init_childticketmanager() {
 
    $PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
 
-   $plugin = new Plugin();
-   if ($plugin->isActivated("childticketmanager")) {
+   if (class_exists('PluginChildticketmanagerConfig')) {
       // load javascript files
-      $PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/function.js';
-      $PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/lodash.core.min.js';
-      $PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/childticketmanager.js.php';
+      $PLUGIN_HOOKS['add_javascript']['childticketmanager'] = [
+         'js/function.js',
+         'js/lodash.core.min.js',
+         'js/childticketmanager.js.php',
+      ];
 
       Plugin::registerClass('PluginChildticketmanagerConfig', [
          'addtabon' => 'Config'

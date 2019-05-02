@@ -9,13 +9,12 @@
 class PluginChildticketmanagerConfig extends Config {
    const CONTEXT = 'plugin:childticketmanager';
 
-
    static function getTypeName($nb = 0) {
       return __("Tickets enfants", "childticketmanager");
    }
 
    static function getConfig() {
-      return self::getConfigurationValues(self::CONTEXT);
+      return Config::getConfigurationValues(self::CONTEXT);
    }
 
    static function initConfig() {
@@ -93,7 +92,7 @@ class PluginChildticketmanagerConfig extends Config {
             'value' => __CLASS__
          ]);
          echo Html::hidden('config_context', [
-            self::CONTEXT
+            'value' => self::CONTEXT
          ]);
          echo Html::submit(_sx('button','Save'), [
             'name' => 'update'
