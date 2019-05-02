@@ -11,10 +11,10 @@ if (!$plugin->isActivated('childticketmanager')) {
 }
 
 Html::header(
-	__('Tickets enfants', 'childticketmanager'),
-	$_SERVER['PHP_SELF'],
-	'admin',
-	'PluginchildticketmanagerConfig'
+   __('Tickets enfants', 'childticketmanager'),
+   $_SERVER['PHP_SELF'],
+   'admin',
+   'PluginchildticketmanagerConfig'
 );
 
 //Search::show('PluginchildticketmanagerConfig');

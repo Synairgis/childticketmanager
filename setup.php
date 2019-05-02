@@ -42,7 +42,7 @@ define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.0");
  * @return void
  */
 function plugin_init_childticketmanager() {
-	global $PLUGIN_HOOKS;
+   global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
 

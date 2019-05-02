@@ -33,16 +33,16 @@
  */
 function plugin_childticketmanager_install()
 {
-	global $DB;
+   global $DB;
 
-	$migration = new Migration(PLUGIN_CHILDTICKETMANAGER_VERSION);
+   $migration = new Migration(PLUGIN_CHILDTICKETMANAGER_VERSION);
 
-	$install = new PluginChildticketmanagerInstall();
-	if (!$install->isPluginInstalled()) {
-		return $install->install($migration);
-	}
+   $install = new PluginChildticketmanagerInstall();
+   if (!$install->isPluginInstalled()) {
+      return $install->install($migration);
+   }
 
-	return $install->upgrade($migration);
+   return $install->upgrade($migration);
 }
 
 /**
@@ -52,9 +52,9 @@ function plugin_childticketmanager_install()
  */
 function plugin_childticketmanager_uninstall()
 {
-	global $DB;
+   global $DB;
 
-	$query = "DELETE FROM glpi_configs WHERE context = 'plugin:childticketmanager'";
-	$DB->queryOrDie($query);
-	return true;
+   $query = "DELETE FROM glpi_configs WHERE context = 'plugin:childticketmanager'";
+   $DB->queryOrDie($query);
+   return true;
 }

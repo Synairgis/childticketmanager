@@ -9,11 +9,11 @@ $ticket->getFromDB($_POST['id']);
 
 
 if($_POST['type'] == Ticket::INCIDENT_TYPE)
-	$condition = "`is_incident`='1'";
+   $condition = "`is_incident`='1'";
 elseif($_POST['type'] == Ticket::DEMAND_TYPE)
-	$condition = "`is_request`='1'";
+   $condition = "`is_request`='1'";
 else
-	$condition = "";
+   $condition = "";
 
 $retour['condition'] = sha1($condition);
 $_SESSION['glpicondition'][$retour['condition']] = $condition;

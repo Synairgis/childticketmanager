@@ -14,166 +14,166 @@ $configs = Config::getConfigurationValues('plugin:childticketmanager' , ['childt
 if($configs['childticketmanager_close_child'] == 1 && $_POST['tickets_status'] == CommonITILObject::CLOSED)
 {
 
-	if(version_compare(GLPI_VERSION, "9.3") >= 0)
-		echo json_encode(updateChildTickets_93($_POST['tickets_status'], $_POST['tickets_id'], null));
-	else
-		echo json_encode(updateChildTickets_92($_POST['tickets_status'], $_POST['tickets_id'], null));
+   if(version_compare(GLPI_VERSION, "9.3") >= 0)
+      echo json_encode(updateChildTickets_93($_POST['tickets_status'], $_POST['tickets_id'], null));
+   else
+      echo json_encode(updateChildTickets_92($_POST['tickets_status'], $_POST['tickets_id'], null));
 //	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
 }
 elseif($configs['childticketmanager_resolve_child'] == 1 && $_POST['tickets_status'] == CommonITILObject::SOLVED)
 {
-	if(version_compare(GLPI_VERSION, "9.3") >= 0)
-		echo json_encode(updateChildTickets_93($_POST['tickets_status'], $_POST['tickets_id'], null));
-	else
-		echo json_encode(updateChildTickets_92($_POST['tickets_status'], $_POST['tickets_id'], null));
+   if(version_compare(GLPI_VERSION, "9.3") >= 0)
+      echo json_encode(updateChildTickets_93($_POST['tickets_status'], $_POST['tickets_id'], null));
+   else
+      echo json_encode(updateChildTickets_92($_POST['tickets_status'], $_POST['tickets_id'], null));
 //	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
 }
 else
 {
-	echo json_encode("");
+   echo json_encode("");
 }
 
 function updateChildTickets_93($status, $current, $parent)
 {
-	global $DB;
-	$children = getChildTickets($current);
-	$retour = [];
+   global $DB;
+   $children = getChildTickets($current);
+   $retour = [];
 
-	if($children != null)
-	{
-		foreach($children as $tix)
-			$retour = array_merge($retour, updateChildTickets($status, $tix, $current));
-	}
+   if($children != null)
+   {
+      foreach($children as $tix)
+         $retour = array_merge($retour, updateChildTickets($status, $tix, $current));
+   }
 
-	$currentDate = new datetime();
-	$parent_ticket = new Ticket();
-	$parent_ticket->getFromDB($current);
-	$updatedFields = ['status', 'solvedate', 'closedate'];
-	$oldValues = [];
+   $currentDate = new datetime();
+   $parent_ticket = new Ticket();
+   $parent_ticket->getFromDB($current);
+   $updatedFields = ['status', 'solvedate', 'closedate'];
+   $oldValues = [];
 
-	if($parent_ticket->fields['status'] >= $status)
-		return $retour;
+   if($parent_ticket->fields['status'] >= $status)
+      return $retour;
 
-	$parent_ticket->input = [];
-	$parent_ticket->updates = [];
+   $parent_ticket->input = [];
+   $parent_ticket->updates = [];
 
-	Plugin::doHook("pre_item_update", $parent_ticket);
+   Plugin::doHook("pre_item_update", $parent_ticket);
 
-	foreach($updatedFields as $fld)
-		$oldValues[$fld] = $parent_ticket->fields[$fld];
+   foreach($updatedFields as $fld)
+      $oldValues[$fld] = $parent_ticket->fields[$fld];
 
-	$parent_ticket->fields['status'] = $status;
+   $parent_ticket->fields['status'] = $status;
 
-	if($status == CommonITILObject::SOLVED)
-	{
-		$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
+   if($status == CommonITILObject::SOLVED)
+   {
+      $parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 
-		if( $parent != null)
-		{
-			$solution = new ITILSolution();
+      if( $parent != null)
+      {
+         $solution = new ITILSolution();
 
-			$fields = [
-				'itemtype' => 'Ticket',
-				'items_id' => $parent_ticket->fields['id'],
-				'solutiontypes_id' => 0,
-				'solutiontype_name' => null,
-				'content' => "Résolu par le biais du billet " . $parent,
-				'date_creation' => $currentDate->format("Y-m-d H:i:s"),
-				'date_mod' => $currentDate->format("Y-m-d H:i:s"),
-				'date_approval' => null,
-				'users_id' => Session::getLoginUserID(),
-				'user_name' => null,
-				'users_id_editor' => 0,
-				'users_id_approval' => $parent_ticket->fields['users_id_recipient'],
-				'user_name_approval' => null,
-				'status' => 2,
-				'ticketfollowups_id' => null
-			];
+         $fields = [
+            'itemtype' => 'Ticket',
+            'items_id' => $parent_ticket->fields['id'],
+            'solutiontypes_id' => 0,
+            'solutiontype_name' => null,
+            'content' => "Résolu par le biais du billet " . $parent,
+            'date_creation' => $currentDate->format("Y-m-d H:i:s"),
+            'date_mod' => $currentDate->format("Y-m-d H:i:s"),
+            'date_approval' => null,
+            'users_id' => Session::getLoginUserID(),
+            'user_name' => null,
+            'users_id_editor' => 0,
+            'users_id_approval' => $parent_ticket->fields['users_id_recipient'],
+            'user_name_approval' => null,
+            'status' => 2,
+            'ticketfollowups_id' => null
+         ];
 
-			$solution->add($fields);
-		}
+         $solution->add($fields);
+      }
 
-		$mailtype = "solved";
-	}
-	elseif($status == CommonITILObject::CLOSED)
-	{
-		$parent_ticket->fields['closedate'] = $currentDate->format("Y-m-d H:i:s");
+      $mailtype = "solved";
+   }
+   elseif($status == CommonITILObject::CLOSED)
+   {
+      $parent_ticket->fields['closedate'] = $currentDate->format("Y-m-d H:i:s");
 
-		if($parent_ticket->fields['solvedate'] == null)
-			$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
+      if($parent_ticket->fields['solvedate'] == null)
+         $parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 
-		$mailtype = "closed";
-		$parent_ticket->updateInDB($updatedFields, $oldValues);
-	}
+      $mailtype = "closed";
+      $parent_ticket->updateInDB($updatedFields, $oldValues);
+   }
 
 
-	Plugin::doHook("item_update", $parent_ticket);
+   Plugin::doHook("item_update", $parent_ticket);
 
-	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
-	NotificationEvent::raiseEvent($mailtype, $parent_ticket);
+   Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
+   NotificationEvent::raiseEvent($mailtype, $parent_ticket);
 
-	return array_merge( [$current], $retour );
+   return array_merge( [$current], $retour );
 }
 
 
 
 function updateChildTickets_92($status, $current, $parent)
 {
-	global $DB;
-	$children = getChildTickets($current);
-	$retour = [];
+   global $DB;
+   $children = getChildTickets($current);
+   $retour = [];
 
-	if($children != null)
-	{
-		foreach($children as $tix)
-			$retour = array_merge($retour, updateChildTickets($status, $tix, $current));
-	}
+   if($children != null)
+   {
+      foreach($children as $tix)
+         $retour = array_merge($retour, updateChildTickets($status, $tix, $current));
+   }
 
-	$currentDate = new datetime();
-	$parent_ticket = new Ticket();
-	$parent_ticket->getFromDB($current);
-	$updatedFields = ['status', 'solvedate', 'closedate', 'solution'];
-	$oldValues = [];
+   $currentDate = new datetime();
+   $parent_ticket = new Ticket();
+   $parent_ticket->getFromDB($current);
+   $updatedFields = ['status', 'solvedate', 'closedate', 'solution'];
+   $oldValues = [];
 
-	if($parent_ticket->fields['status'] >= $status)
-		return $retour;
+   if($parent_ticket->fields['status'] >= $status)
+      return $retour;
 
-	$parent_ticket->input = [];
-	$parent_ticket->updates = [];
+   $parent_ticket->input = [];
+   $parent_ticket->updates = [];
 
-	Plugin::doHook("pre_item_update", $parent_ticket);
+   Plugin::doHook("pre_item_update", $parent_ticket);
 
-	foreach($updatedFields as $fld)
-		$oldValues[$fld] = $parent_ticket->fields[$fld];
+   foreach($updatedFields as $fld)
+      $oldValues[$fld] = $parent_ticket->fields[$fld];
 
-	$parent_ticket->fields['status'] = $status;
+   $parent_ticket->fields['status'] = $status;
 
-	if($status == CommonITILObject::SOLVED)
-	{
-		$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
-		if($parent_ticket->fields['solution'] == null && $parent != null)
-			$parent_ticket->fields['solution'] = "Résolu par le biais du billet " . $parent;
+   if($status == CommonITILObject::SOLVED)
+   {
+      $parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
+      if($parent_ticket->fields['solution'] == null && $parent != null)
+         $parent_ticket->fields['solution'] = "Résolu par le biais du billet " . $parent;
 
-		$mailtype = "solved";
-	}
-	elseif($status == CommonITILObject::CLOSED)
-	{
-		$parent_ticket->fields['closedate'] = $currentDate->format("Y-m-d H:i:s");
+      $mailtype = "solved";
+   }
+   elseif($status == CommonITILObject::CLOSED)
+   {
+      $parent_ticket->fields['closedate'] = $currentDate->format("Y-m-d H:i:s");
 
-		if($parent_ticket->fields['solvedate'] == null)
-			$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
+      if($parent_ticket->fields['solvedate'] == null)
+         $parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 
-		$mailtype = "closed";
-	}
+      $mailtype = "closed";
+   }
 
-	$parent_ticket->updateInDB($updatedFields, $oldValues);
+   $parent_ticket->updateInDB($updatedFields, $oldValues);
 
-	Plugin::doHook("item_update", $parent_ticket);
+   Plugin::doHook("item_update", $parent_ticket);
 
-	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
-	NotificationEvent::raiseEvent($mailtype, $parent_ticket);
+   Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
+   NotificationEvent::raiseEvent($mailtype, $parent_ticket);
 
-	return array_merge( [$current], $retour );
+   return array_merge( [$current], $retour );
 }
 
 
@@ -182,19 +182,19 @@ function updateChildTickets_92($status, $current, $parent)
 
 function getChildTickets($parent_id)
 {
-	global $DB;
+   global $DB;
 
-	$query = "SELECT tickets_id_1 as ticket_id FROM glpi_tickets_tickets WHERE tickets_id_2 = ? AND LINK = 3";
-	$stmt = $DB->prepare($query);
+   $query = "SELECT tickets_id_1 as ticket_id FROM glpi_tickets_tickets WHERE tickets_id_2 = ? AND LINK = 3";
+   $stmt = $DB->prepare($query);
 
-	$stmt->bind_param('i', $parent_id);
-	$stmt->execute();
+   $stmt->bind_param('i', $parent_id);
+   $stmt->execute();
 
-	$res = $stmt->get_result();
+   $res = $stmt->get_result();
 
-	if($res->num_rows == 0)
-		return null;
+   if($res->num_rows == 0)
+      return null;
 
-	return array_column($res->fetch_all(MYSQLI_ASSOC), 'ticket_id');
+   return array_column($res->fetch_all(MYSQLI_ASSOC), 'ticket_id');
 
 }
