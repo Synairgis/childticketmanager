@@ -3,12 +3,12 @@
 class PluginChildticketmanagerAction {
 
    static function updateChildTickets_93($status, $current, $parent) {
-      $children = getChildTickets($current);
+      $children = self::getChildTickets($current);
       $retour = [];
 
       if ($children != null) {
          foreach($children as $tix) {
-            $retour = array_merge($retour, updateChildTickets($status, $tix, $current));
+            $retour = array_merge($retour, self::updateChildTickets_93($status, $tix, $current));
          }
       }
 
@@ -84,12 +84,12 @@ class PluginChildticketmanagerAction {
 
 
    static function updateChildTickets_92($status, $current, $parent) {
-      $children = getChildTickets($current);
+      $children = self::getChildTickets($current);
       $retour   = [];
 
       if ($children != null) {
          foreach ($children as $tix) {
-            $retour = array_merge($retour, updateChildTickets($status, $tix, $current));
+            $retour = array_merge($retour, self::updateChildTickets_92($status, $tix, $current));
          }
       }
 
@@ -239,7 +239,7 @@ JAVASCRIPT;
       }
       echo "&nbsp;";
       echo "&nbsp;";
-      echo html::submit( __('CrÃ©er enfant', 'childticketmanager'), [
+      echo html::submit( __('Créer enfant', 'childticketmanager'), [
          'id' => 'childticketmanager_submit'
       ]);
       echo "<br>";

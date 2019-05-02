@@ -4,11 +4,11 @@ include ("../../../inc/includes.php");
 //change mimetype
 header("Content-type: application/javascript");
 
+
 //not executed in self-service interface & right verification
 if ($_SESSION['glpiactiveprofile']['interface'] == "central"
    && Session::haveRight("ticket", CREATE)
-   && Session::haveRight("ticket", UPDATE)
-) {
+   && Session::haveRight("ticket", UPDATE)) {
 
    $locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
    $redirect = Config::getConfigurationValues('core', ['backcreated']);
@@ -34,9 +34,9 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
          return;
       }
       // #3A5693
-      var ticket_html = "<i class='fa fa-ticket pointer' style='font-size: 20px;' id='create_child_ticket'></i>";
+      var ticket_html = "<i class='fa fas fa-ticket fa-ticket-alt pointer' style='font-size: 20px;' id='create_child_ticket'></i>";
 
-      $("th:contains('$locale_linkedtickets')>span.fa")
+      $("th:contains('{$locale_linkedtickets}')>span.fa")
          .after(ticket_html);
 
       callback();

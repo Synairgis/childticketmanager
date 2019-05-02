@@ -8,4 +8,4 @@
 
 include ("../../../inc/includes.php");
 
-PluginChildticketmanagerConfig::display($params['tickets_id']);
+PluginChildticketmanagerAction::display($_REQUEST['tickets_id']);
