@@ -6,8 +6,7 @@
  * Time: 14:43
  */
 
-class PluginChildticketmanagerConfig extends CommonDBTM
-{
+class PluginChildticketmanagerConfig extends CommonDBTM {
    static function getTypeName($nb = 0) {
       return __("Tickets enfants", "childticketmanager");
    }
@@ -16,20 +15,16 @@ class PluginChildticketmanagerConfig extends CommonDBTM
       return Config::getConfigurationValues('plugin:childticketmanager');
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0)
-   {
-      switch ($item->getType())
-      {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+      switch ($item->getType()) {
          case "Config":
             return self::createTabEntry(self::getTypeName());
       }
       return '';
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0)
-   {
-      switch ($item->getType())
-      {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+      switch ($item->getType()) {
          case "Config":
             return self::showForConfig($item, $withtemplate);
       }
@@ -38,20 +33,22 @@ class PluginChildticketmanagerConfig extends CommonDBTM
    }
 
 
-   static function showForConfig()
-   {
-      global $CFG_GLPI;
-
-      if (!Session::haveRight("config", UPDATE)) {
+   static function showForConfig() {
+      $canedit = Session::haveRight("config", UPDATE);
+      if (!$canedit) {
          return false;
       }
 
       $current_config = self::getConfig();
-      $canedit        = Session::haveRight("config", UPDATE);
-
-      $current_config['childticketmanager_close_child'] = isset($current_config['childticketmanager_close_child']) ? $current_config['childticketmanager_close_child'] : false;
-      $current_config['childticketmanager_resolve_child'] = isset($current_config['childticketmanager_resolve_child']) ? $current_config['childticketmanager_resolve_child'] : false;
-      $current_config['childticketmanager_display_tmpl_link'] = isset($current_config['childticketmanager_display_tmpl_link']) ? $current_config['childticketmanager_display_tmpl_link'] : false;
+      $current_config['childticketmanager_close_child'] = isset($current_config['childticketmanager_close_child'])
+         ? $current_config['childticketmanager_close_child']
+         : false;
+      $current_config['childticketmanager_resolve_child'] = isset($current_config['childticketmanager_resolve_child'])
+         ? $current_config['childticketmanager_resolve_child']
+         : false;
+      $current_config['childticketmanager_display_tmpl_link'] = isset($current_config['childticketmanager_display_tmpl_link'])
+         ? $current_config['childticketmanager_display_tmpl_link']
+         : false;
 
       if ($canedit) {
          echo "<form name='form' action='".Toolbox::getItemTypeFormURL("Config")."' method='post'>";
@@ -77,13 +74,18 @@ class PluginChildticketmanagerConfig extends CommonDBTM
       echo "<br>";
       echo "<br>";
 
-      if ($canedit)
-      {
+      if ($canedit) {
          // we define a set of hidden field to indicate to glpi, we save data for the plugin context
-         echo Html::hidden('config_class', ['value' => __CLASS__]);
-         echo Html::hidden('config_context', ['value' => 'plugin:childticketmanager']);
-         echo Html::submit(_sx('button','Save'), ['name' => 'update']);
-           Html::closeForm();
+         echo Html::hidden('config_class', [
+            'value' => __CLASS__
+         ]);
+         echo Html::hidden('config_context', [
+            'value' => 'plugin:childticketmanager'
+         ]);
+         echo Html::submit(_sx('button','Save'), [
+            'name' => 'update'
+         ]);
+         Html::closeForm();
       }
    }
 }

@@ -36,35 +36,43 @@ $new_ticket_values['requesttypes_id'] = isset($new_ticket_values['requesttypes_i
 
 //$new_ticket_values['global_validation'] = Rien à faire puisqu'on prend soit la valeur du gabarit ou la valeur par défaut
 
-$new_ticket_values['locations_id'] = isset($new_ticket_values['locations_id']) ? $new_ticket_values['locations_id'] : $parent_ticket->getField('locations_id');
-$new_ticket_values['name'] = isset($new_ticket_values['name']) ? $new_ticket_values['name'] : $parent_ticket->getField('name');
-$new_ticket_values['content'] = isset($new_ticket_values['content']) ? $new_ticket_values['content'] : $parent_ticket->getField('content');
+$new_ticket_values['locations_id'] = isset($new_ticket_values['locations_id'])
+   ? $new_ticket_values['locations_id']
+   : $parent_ticket->getField('locations_id');
+$new_ticket_values['name'] = isset($new_ticket_values['name'])
+   ? $new_ticket_values['name']
+   : $parent_ticket->getField('name');
+$new_ticket_values['content'] = isset($new_ticket_values['content'])
+   ? $new_ticket_values['content']
+   : $parent_ticket->getField('content');
 
-foreach($new_ticket_values as $field => $val)
-{
-   if($field != '_documents_id')
+foreach ($new_ticket_values as $field => $val) {
+   if ($field != '_documents_id') {
       $new_ticket_values[$field] = $DB->escape($val);
+   }
 
-      // $new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
+   // $new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
 }
 
-$new_ticket->add(  $new_ticket_values  );
-
+$new_ticket->add($new_ticket_values);
 $relation = new Ticket_Ticket();
+$relation->add([
+   'tickets_id_1' => $new_ticket->getID(),
+   'tickets_id_2' => $parent_ticket->getID(),
+   'link'         => Ticket_Ticket::SON_OF
+]);
 
-$relation->add( ['tickets_id_1' => $new_ticket->getID(), 'tickets_id_2' => $parent_ticket->getID(), 'link' => 3] );
-
-if( isset( $new_ticket_values['_documents_id']  )   )
-{
-   foreach($new_ticket_values['_documents_id'] as $docID)
-   {
+if (isset($new_ticket_values['_documents_id'])) {
+   foreach ($new_ticket_values['_documents_id'] as $docID) {
       $docItem = new Document_Item();
       $docItem->add([
          'documents_id' => $docID,
-         'itemtype' => 'Ticket',
-         'items_id' => $new_ticket->getID()
+         'itemtype'     => 'Ticket',
+         'items_id'     => $new_ticket->getID()
       ]);
    }
 }
 
-echo json_encode(["new_ticket_id" => $new_ticket->getID()]);
+echo json_encode([
+   "new_ticket_id" => $new_ticket->getID()
+]);
