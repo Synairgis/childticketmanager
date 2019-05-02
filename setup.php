@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.0.4');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.1.0');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "9.3");
@@ -90,7 +90,7 @@ function plugin_version_childticketmanager() {
  *
  * @return boolean
  */
-function plugin_branding_check_prerequisites() {
+function plugin_childticketmanager_check_prerequisites() {
    $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
    $min = version_compare($version, PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION, '>=');
    $max = version_compare($version, PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION, '<');

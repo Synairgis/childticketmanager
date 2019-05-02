@@ -6,13 +6,24 @@
  * Time: 14:43
  */
 
-class PluginChildticketmanagerConfig extends CommonDBTM {
+class PluginChildticketmanagerConfig extends Config {
+   const CONTEXT = 'plugin:childticketmanager';
+
+
    static function getTypeName($nb = 0) {
       return __("Tickets enfants", "childticketmanager");
    }
 
    static function getConfig() {
-      return Config::getConfigurationValues('plugin:childticketmanager');
+      return self::getConfigurationValues(self::CONTEXT);
+   }
+
+   static function initConfig() {
+      return Config::setConfigurationValues(self::CONTEXT, [
+         'childticketmanager_close_child'       => 0,
+         'childticketmanager_resolve_child'     => 0,
+         'childticketmanager_display_tmpl_link' => 0,
+      ]);
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -34,8 +45,7 @@ class PluginChildticketmanagerConfig extends CommonDBTM {
 
 
    static function showForConfig() {
-      $canedit = Session::haveRight("config", UPDATE);
-      if (!$canedit) {
+      if (!$canedit = Session::haveRight(self::$rightname, UPDATE)) {
          return false;
       }
 
@@ -56,20 +66,23 @@ class PluginChildticketmanagerConfig extends CommonDBTM {
 
       echo __("Fermer les tickets enfants à la fermeture du parent", 'childticketmanager');
       echo "&nbsp;";
-      Dropdown::showYesNo("childticketmanager_close_child", $current_config['childticketmanager_close_child']);
+      Dropdown::showYesNo("childticketmanager_close_child",
+                          $current_config['childticketmanager_close_child']);
       echo "<br>";
       echo "<br>";
 
       echo __("Résoudre les tickets enfants à la résolution du parent", 'childticketmanager');
       echo "&nbsp;";
-      Dropdown::showYesNo("childticketmanager_resolve_child", $current_config['childticketmanager_resolve_child']);
+      Dropdown::showYesNo("childticketmanager_resolve_child",
+                          $current_config['childticketmanager_resolve_child']);
 
       echo "<br>";
       echo "<br>";
 
       echo __("Afficher le lien vers le gabarit", 'childticketmanager');
       echo "&nbsp;";
-      Dropdown::showYesNo("childticketmanager_display_tmpl_link", $current_config['childticketmanager_display_tmpl_link']);
+      Dropdown::showYesNo("childticketmanager_display_tmpl_link",
+                          $current_config['childticketmanager_display_tmpl_link']);
 
       echo "<br>";
       echo "<br>";
@@ -80,7 +93,7 @@ class PluginChildticketmanagerConfig extends CommonDBTM {
             'value' => __CLASS__
          ]);
          echo Html::hidden('config_context', [
-            'value' => 'plugin:childticketmanager'
+            self::CONTEXT
          ]);
          echo Html::submit(_sx('button','Save'), [
             'name' => 'update'

@@ -32,13 +32,9 @@
  * @return boolean
  */
 function plugin_childticketmanager_install() {
-   $migration = new Migration(PLUGIN_CHILDTICKETMANAGER_VERSION);
-   $install   = new PluginChildticketmanagerInstall();
-   if (!$install->isPluginInstalled()) {
-      return $install->install($migration);
-   }
+   PluginChildticketmanagerConfig::initConfig();
 
-   return $install->upgrade($migration);
+   return true;
 }
 
 /**
