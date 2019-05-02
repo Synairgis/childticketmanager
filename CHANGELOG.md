@@ -15,7 +15,7 @@
 <a name="2.0.1"></a>
 
 - Fixed incorrect binding that kept cascading resolution/closing of tickets from working
-- Reset list value when the ticket type changes to avoid problems with potentially impossible combinations 
+- Reset list value when the ticket type changes to avoid problems with potentially impossible combinations
 
 <a name="2.0.0"></a>
 

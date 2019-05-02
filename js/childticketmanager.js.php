@@ -9,38 +9,38 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	&& Session::haveRight("ticket", CREATE)
 	&& Session::haveRight("ticket", UPDATE)
 ) {
-	
+
 	$locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
 	$redirect = Config::getConfigurationValues('core', ['backcreated']);
 	$redirect = $redirect['backcreated'];
 
 	$testing = GLPI_ROOT;
 	$version = GLPI_VERSION;
-	
+
 	$JS = <<<JAVASCRIPT
-		
+
 		var glpi_version = "{$version}";
         glpi_version = glpi_version.replace(/\./g, "") + "000";
         glpi_version = glpi_version.substr(0,3);
 
-		
+
 		childticketmanager_addCloneLink = function(callback) {
 	  	//only in edit form
 			if (getUrlParameter('id') == undefined) {
 				return;
 			}
-			
+
 			if ($("#create_child_ticket").length > 0) { return; }
 			// #3A5693
 			var ticket_html = "<i class='fa fa-ticket pointer' style='font-size: 20px;' id='create_child_ticket'></i>";
-				
+
 			$("th:contains('$locale_linkedtickets')>span.fa")
 				.after(ticket_html);
-			
+
 			callback();
-			
+
 		};
-		
+
 		childticketmanager_bindClick = _.once(function(){
 			$(document).on("click", "#create_child_ticket",
 			_.once(function(e){
@@ -49,15 +49,15 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 				data:    { 'tickets_id': getUrlParameter('id') },
 				success: function(response, opts) {
 						$("[id^='linkedticket']").after(response);
-						
+
 						$("#childticketmanager_submit").on("click", function(e){
 							e.preventDefault();
-							
+
 							$.ajax({
 								url: '../plugins/childticketmanager/ajax/childticketmanager_save.php',
 								method: 'post',
 								dataType: "json",
-								data: {	'tickets_id': getUrlParameter('id'), 
+								data: {	'tickets_id': getUrlParameter('id'),
 										'category': $("[id^='dropdown_childticketmanager_category']").val()
 									  },
 								success: function(response, opts) {
@@ -67,34 +67,34 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 										displayAjaxMessageAfterRedirect();
 								}
 							});
-							
+
 						});
-						
+
 						$("#childticketmanager_templ").on("click", function(e){
 							e.preventDefault();
-							
+
 							$.ajax({
 								url: '../plugins/childticketmanager/ajax/childticketmanager_gettemplate.php',
 								method: 'post',
 								dataType: "json",
-								data: {	'tickets_id': getUrlParameter('id'), 
+								data: {	'tickets_id': getUrlParameter('id'),
 										'category': $("[id^='dropdown_childticketmanager_category']").val()
 									  },
 								success: function(response, opts) {
 									window.location.href = "tickettemplate.form.php?id=" + response["template_id"];
 								}
 							});
-							
+
 						});
 
 						$("select[id^='dropdown_type']").trigger("change");
 					}
 				});
 		   	}));
-			
-			
+
+
 		});
-	
+
 
 	/********************************************************
     * Fonction d'événement qui rafraîchi la liste du plugin
@@ -105,7 +105,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 	childticketmanager_change_93 = function(e){
 
 		$("select[name='childticketmanager_category']").val(0);
-		
+
 		$.ajax({
 			url: '../plugins/childticketmanager/ajax/childticketmanager_getcondition.php',
 			method: 'post',
@@ -215,7 +215,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
     *********************************************************/
 
 	childticketmanager_change_92 = function(e){
-		
+
 		$.ajax({
 			url: '../plugins/childticketmanager/ajax/childticketmanager_getcondition.php',
 			method: 'post',
@@ -336,14 +336,14 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 
 	childticketmanager_submit = function(e, opts){
 			opts = opts || {};
-						
+
 			/*
 			* Si la liste dropdown_status est visible, c'est qu'on est sur la page d'édition du ticket
 			* alors on doit prendre la valeur de cette liste pour déterminer le statut. Si elle est invisible
 			* c'est qu'on est sur la page de traitement du ticket et dans ce cas, le statut est déterminé
 			* par ce que l'on reçoit dans les paramètres de l'événement.
 			*/
-			
+
 			if(  $("[id^='dropdown_status']").is(":visible")  )
 				var status = $("[id^='dropdown_status']").val();
 			else
@@ -358,7 +358,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			var childrenUpdated = e.data.childrenUpdated || opts.childrenUpdated;
 
 			if (typeof childrenUpdated == "undefined")
-				childrenUpdated = false;			
+				childrenUpdated = false;
 
 			if(!childrenUpdated && (status == 5 || status == 6) )
 			{
@@ -380,9 +380,9 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 				});
 			}
 		};
-		
+
 	$(document).ready(function() {
-		
+
 		var pageActu = window.location.pathname.split("/").slice(-1)[0];
 
 		// Si on ne se trouve pas sur la page de gestion des tickets, on ne doit rien faire afin de ne
@@ -392,14 +392,14 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 			return;
 
 		childticketmanager_addCloneLink(childticketmanager_bindClick);
-		
+
 		$(".glpi_tabs").on("tabsload", function(event, ui) {
 			childticketmanager_addCloneLink(childticketmanager_bindClick);
 
 			// Quand on est sur la page du ticket et qu'on le résout/ferme, le bouton s'appelle "update".
 			// Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
 			// C'est pour ça qu'on doit avoir deux bindings pour la même chose
-			
+
 			$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
 			$("input[name='add']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
 			$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
@@ -407,10 +407,10 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 
 		$("input[name='update']").on("click", {'childrenUpdated': false}, childticketmanager_submit);
 		$("input[name='add']").on("click", {'ticketStatus': 5, 'childrenUpdated': false}, childticketmanager_submit);
-		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);			
-		
+		$("input[name='add_close']").on("click", {'ticketStatus': 6, 'childrenUpdated': false}, childticketmanager_submit);
+
 		$(document).ajaxComplete(function(event, request, settings) {
-			
+
 			if(typeof(settings.data) != "undefined" && typeof(settings.data) != "object")
 			{
 				var params = settings.data.split("&");
@@ -424,15 +424,15 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
 
 			if(glpi_version < 930)
 				$("select[id^='dropdown_type']").not('.change-bound').on('change', childticketmanager_change_92).addClass('change-bound');
-			else	
+			else
 				$("select[id^='dropdown_type']").not('.change-bound').on('change', childticketmanager_change_93).addClass('change-bound');
 		});
-		
-		
+
+
 	});
 
-		
+
 JAVASCRIPT;
-	
+
 	echo $JS;
 }

@@ -18,7 +18,7 @@ $new_ticket_values = $template->predefined;
 
 $new_ticket_values['entities_id'] = $parent_ticket->getField('entities_id');
 
-// La date d'ouverture... si elle vient du template on n'a rien à faire et si 
+// La date d'ouverture... si elle vient du template on n'a rien à faire et si
 // le template ne la définit pas, glpi prend la date courante alors dans tous les cas, on n'a rien à faire.
 // $new_ticket_values['date'] =
 
@@ -44,7 +44,7 @@ foreach($new_ticket_values as $field => $val)
 {
 	if($field != '_documents_id')
 		$new_ticket_values[$field] = $DB->escape($val);
-	
+
 		// $new_ticket_values[$field] = mysqli_real_escape_string($DB->dbh, $val);
 }
 

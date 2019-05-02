@@ -27,11 +27,11 @@ if($ticket->fields["type"] == 1) // incident
 	$cond = "`is_incident`='1'";
 elseif($ticket->fields["type"] == 2) // Demande
 	$cond = "`is_request`='1'";
-else 
+else
 	$cond = "";
 
 ITILCategory::dropdown([
-	'comments' => false, 
+	'comments' => false,
 	'name' => 'childticketmanager_category',
 	'condition' => $cond,
 	'entity' => $ticket->fields["entities_id"],

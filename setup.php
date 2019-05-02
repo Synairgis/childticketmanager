@@ -25,7 +25,7 @@
  along with childticketmanager. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-  
+
 define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.0.4');
 
 /**
@@ -36,9 +36,9 @@ define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.0.4');
  */
 function plugin_init_childticketmanager() {
 	global $PLUGIN_HOOKS;
-	
+
 	$PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
-	
+
 	$PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/function.js';
 	$PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/lodash.core.min.js';
 	$PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/childticketmanager.js.php';

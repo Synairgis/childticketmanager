@@ -33,7 +33,7 @@ require_once(__DIR__ . '/install/install.php');
  *
  * @return boolean
  */
-function plugin_childticketmanager_install() 
+function plugin_childticketmanager_install()
 {
 	global $DB;
 
@@ -43,7 +43,7 @@ function plugin_childticketmanager_install()
 	if (!$install->isPluginInstalled()) {
 		return $install->install($migration);
 	}
-	
+
 	return $install->upgrade($migration);
 }
 
@@ -52,7 +52,7 @@ function plugin_childticketmanager_install()
  *
  * @return boolean
  */
-function plugin_childticketmanager_uninstall() 
+function plugin_childticketmanager_uninstall()
 {
 	global $DB;
 

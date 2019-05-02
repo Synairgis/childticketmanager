@@ -13,8 +13,8 @@ if (!defined('GLPI_ROOT')) {
 class PluginChildticketmanagerInstall
 {
 	protected $migration;
-	
-	protected $default_configs = 
+
+	protected $default_configs =
 		[
 			['plugin:childticketmanager', 'childticketmanager_close_child', 0],
 			['plugin:childticketmanager', 'childticketmanager_resolve_child', 0],
@@ -27,7 +27,7 @@ class PluginChildticketmanagerInstall
 	 *
 	 * @return void
 	 */
-	public function install(Migration $migration) 
+	public function install(Migration $migration)
 	{
 		global $DB;
 		$this->migration = $migration;
@@ -40,22 +40,22 @@ class PluginChildticketmanagerInstall
 			$stmt->bind_param('ssi', $config[0], $config[1], $config[2]);
 			$stmt->execute();
 		}
-		
+
 		return true;
-		
+
 	}
 
-	public function upgrade(Migration $migration) 
+	public function upgrade(Migration $migration)
 	{
 		global $DB;
 
 		$this->migration = $migration;
-		
+
 		$this->migration->executeMigration();
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * is the plugin already installed ?
 	 *
@@ -63,13 +63,13 @@ class PluginChildticketmanagerInstall
 	 */
 	public function isPluginInstalled() {
 		global $DB;
-		
+
 		$result = $DB->query("SELECT context FROM glpi_configs WHERE context = 'plugin:childticketmanager'");
-		if ($result) 
+		if ($result)
 		{
-			if ($DB->numrows($result) > 0) 
+			if ($DB->numrows($result) > 0)
 				return true;
-			
+
 		}
 
 		return false;

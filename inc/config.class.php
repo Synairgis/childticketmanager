@@ -16,9 +16,9 @@ class PluginChildticketmanagerConfig extends CommonDBTM
 		return Config::getConfigurationValues('plugin:childticketmanager');
 	}
 
-	function getTabNameForItem(CommonGLPI $item, $withtemplate=0) 
+	function getTabNameForItem(CommonGLPI $item, $withtemplate=0)
 	{
-		switch ($item->getType()) 
+		switch ($item->getType())
 		{
 			case "Config":
 				return self::createTabEntry(self::getTypeName());
@@ -26,9 +26,9 @@ class PluginChildticketmanagerConfig extends CommonDBTM
 		return '';
 	}
 
-	static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) 
+	static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0)
 	{
-		switch ($item->getType()) 
+		switch ($item->getType())
 		{
 			case "Config":
 				return self::showForConfig($item, $withtemplate);
@@ -36,16 +36,16 @@ class PluginChildticketmanagerConfig extends CommonDBTM
 
 		return true;
 	}
-	
 
-	static function showForConfig() 
+
+	static function showForConfig()
 	{
 		global $CFG_GLPI;
-		
+
 		if (!Session::haveRight("config", UPDATE)) {
 			return false;
 		}
-		
+
 		$current_config = self::getConfig();
 		$canedit        = Session::haveRight("config", UPDATE);
 
@@ -76,8 +76,8 @@ class PluginChildticketmanagerConfig extends CommonDBTM
 
 		echo "<br>";
 		echo "<br>";
-		
-		if ($canedit) 
+
+		if ($canedit)
 		{
 			// we define a set of hidden field to indicate to glpi, we save data for the plugin context
 			echo Html::hidden('config_class', ['value' => __CLASS__]);

@@ -24,7 +24,7 @@ elseif($configs['childticketmanager_resolve_child'] == 1 && $_POST['tickets_stat
 {
 	if(version_compare(GLPI_VERSION, "9.3") >= 0)
 		echo json_encode(updateChildTickets_93($_POST['tickets_status'], $_POST['tickets_id'], null));
-	else	
+	else
 		echo json_encode(updateChildTickets_92($_POST['tickets_status'], $_POST['tickets_id'], null));
 //	Session::addMessageAfterRedirect(  __(' mis à jour', 'childticketmanager')  );
 }
@@ -63,8 +63,8 @@ function updateChildTickets_93($status, $current, $parent)
 		$oldValues[$fld] = $parent_ticket->fields[$fld];
 
 	$parent_ticket->fields['status'] = $status;
-	
-	if($status == CommonITILObject::SOLVED) 
+
+	if($status == CommonITILObject::SOLVED)
 	{
 		$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 
@@ -108,7 +108,7 @@ function updateChildTickets_93($status, $current, $parent)
 
 
 	Plugin::doHook("item_update", $parent_ticket);
-	
+
 	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
 	NotificationEvent::raiseEvent($mailtype, $parent_ticket);
 
@@ -147,8 +147,8 @@ function updateChildTickets_92($status, $current, $parent)
 		$oldValues[$fld] = $parent_ticket->fields[$fld];
 
 	$parent_ticket->fields['status'] = $status;
-	
-	if($status == CommonITILObject::SOLVED) 
+
+	if($status == CommonITILObject::SOLVED)
 	{
 		$parent_ticket->fields['solvedate'] = $currentDate->format("Y-m-d H:i:s");
 		if($parent_ticket->fields['solution'] == null && $parent != null)
@@ -165,11 +165,11 @@ function updateChildTickets_92($status, $current, $parent)
 
 		$mailtype = "closed";
 	}
-	
+
 	$parent_ticket->updateInDB($updatedFields, $oldValues);
 
 	Plugin::doHook("item_update", $parent_ticket);
-	
+
 	Session::addMessageAfterRedirect(  __("Ticket ", "childticketmanager") . $parent_ticket->getID() . __(" mis à jour", "childticketmanager")  );
 	NotificationEvent::raiseEvent($mailtype, $parent_ticket);
 
@@ -183,7 +183,7 @@ function updateChildTickets_92($status, $current, $parent)
 function getChildTickets($parent_id)
 {
 	global $DB;
-	
+
 	$query = "SELECT tickets_id_1 as ticket_id FROM glpi_tickets_tickets WHERE tickets_id_2 = ? AND LINK = 3";
 	$stmt = $DB->prepare($query);
 
@@ -196,5 +196,5 @@ function getChildTickets($parent_id)
 		return null;
 
 	return array_column($res->fetch_all(MYSQLI_ASSOC), 'ticket_id');
-	
+
 }
