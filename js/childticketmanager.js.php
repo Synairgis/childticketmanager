@@ -386,13 +386,15 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
       // Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
       // C'est pour ça qu'on doit avoir deux bindings pour la même chose
 
+
       $("input[name='update']").on("click", {
          'childrenUpdated': false
       }, childticketmanager_submit);
-      $("input[name='add']").on("click", {
-         'ticketStatus': 5,
-         'childrenUpdated': false
-      }, childticketmanager_submit);
+      $("form[name=form_ticket], .timeline_box")
+         .children("input[name='add']").on("click", {
+            'ticketStatus': 5,
+            'childrenUpdated': false
+         }, childticketmanager_submit);
       $("input[name='add_close']").on("click", {
          'ticketStatus': 6,
          'childrenUpdated': false
