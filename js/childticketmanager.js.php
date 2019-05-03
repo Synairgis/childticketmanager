@@ -346,6 +346,8 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
          status = -1;
       }
 
+      console.log('submit', status);
+
       var childrenUpdated = null;
       var childrenUpdated = e.data.childrenUpdated || opts.childrenUpdated;
       if (typeof childrenUpdated == "undefined") {
@@ -379,38 +381,10 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
       }
    };
 
-   $(document).ready(function() {
-
-      var pageActu = window.location.pathname.split("/").slice(-1)[0];
-
-      // Si on ne se trouve pas sur la page de gestion des tickets, on ne doit rien faire afin de ne
-      // pas interférer avec le bon fonctionnement de GLPI avec des binding erronés
-
-      if (pageActu != "ticket.form.php") {
-         return;
-      }
-
-      childticketmanager_addCloneLink(childticketmanager_bindClick);
-
-      $(".glpi_tabs").on("tabsload", function(event, ui) {
-         childticketmanager_addCloneLink(childticketmanager_bindClick);
-
-         // Quand on est sur la page du ticket et qu'on le résout/ferme, le bouton s'appelle "update".
-         // Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
-         // C'est pour ça qu'on doit avoir deux bindings pour la même chose
-
-         $("input[name='update']").on("click", {
-            'childrenUpdated': false
-         }, childticketmanager_submit);
-         $("input[name='add']").on("click", {
-            'ticketStatus': 5,
-            'childrenUpdated': false
-         }, childticketmanager_submit);
-         $("input[name='add_close']").on("click", {
-            'ticketStatus': 6,
-            'childrenUpdated': false
-         }, childticketmanager_submit);
-      });
+   var createEvents = function() {
+      // Quand on est sur la page du ticket et qu'on le résout/ferme, le bouton s'appelle "update".
+      // Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
+      // C'est pour ça qu'on doit avoir deux bindings pour la même chose
 
       $("input[name='update']").on("click", {
          'childrenUpdated': false
@@ -423,6 +397,26 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
          'ticketStatus': 6,
          'childrenUpdated': false
       }, childticketmanager_submit);
+   };
+
+   $(document).ready(function() {
+
+      var pageActu = window.location.pathname.split("/").slice(-1)[0];
+
+      // Si on ne se trouve pas sur la page de gestion des tickets, on ne doit rien faire afin de ne
+      // pas interférer avec le bon fonctionnement de GLPI avec des binding erronés
+
+      if (pageActu != "ticket.form.php") {
+         return;
+      }
+
+      childticketmanager_addCloneLink(childticketmanager_bindClick);
+      createEvents();
+
+      $(".glpi_tabs").on("tabsload", function(event, ui) {
+         childticketmanager_addCloneLink(childticketmanager_bindClick);
+         createEvents();
+      });
 
       $(document).ajaxComplete(function(event, request, settings) {
 
@@ -432,17 +426,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
             var params = settings.data.split("&");
             if (params[0] == "action=viewsubitem"
                && params[1] == "type=Solution") {
-               $("input[name='update']").on("click", {
-                  'childrenUpdated': false
-               }, childticketmanager_submit);
-               $("input[name='add']").on("click", {
-                  'ticketStatus': 5,
-                  'childrenUpdated': false
-               }, childticketmanager_submit);
-               $("input[name='add_close']").on("click", {
-                  'ticketStatus': 6,
-                  'childrenUpdated': false
-               }, childticketmanager_submit);
+               createEvents();
             }
          }
 
