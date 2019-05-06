@@ -391,7 +391,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
          'childrenUpdated': false
       }, childticketmanager_submit);
       $("form[name=form_ticket], .timeline_box")
-         .children("input[name='add']").on("click", {
+         .find("input[name='add']").on("click", {
             'ticketStatus': 5,
             'childrenUpdated': false
          }, childticketmanager_submit);
