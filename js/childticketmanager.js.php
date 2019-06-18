@@ -6,9 +6,10 @@ header("Content-type: application/javascript");
 
 
 //not executed in self-service interface & right verification
-if ($_SESSION['glpiactiveprofile']['interface'] == "central"
-   && Session::haveRight("ticket", CREATE)
-   && Session::haveRight("ticket", UPDATE)) {
+if (isset($_SESSION['glpiactiveprofile']['interface'])
+    && $_SESSION['glpiactiveprofile']['interface'] == "central"
+    && Session::haveRight("ticket", CREATE)
+    && Session::haveRight("ticket", UPDATE)) {
 
    $locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
    $redirect = Config::getConfigurationValues('core', ['backcreated']);
@@ -40,7 +41,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
          .after(ticket_html);
 
       callback();
-};
+   };
 
    childticketmanager_bindClick = _.once(function() {
       $(document).on("click", "#create_child_ticket", _.once(function(e) {
