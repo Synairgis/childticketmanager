@@ -15,17 +15,17 @@
             rapatrier le modèle défini dans la catégorie spécifiée et l'appliquer à l'enfant.</fr>
       </long>
    </description>
-   <homepage>https://github.com/pluginsGLPI/childticketmanager</homepage>
-   <download>https://github.com/pluginsGLPI/childticketmanager/releases</download>
-   <issues>https://github.com/pluginsGLPI/childticketmanager/issues</issues>
-   <readme>https://github.com/pluginsGLPI/childticketmanager/blob/master/README.md</readme>
+   <homepage>https://github.com/Synairgis/childticketmanager</homepage>
+   <download>https://github.com/Synairgis/childticketmanager/releases</download>
+   <issues>https://github.com/Synairgis/childticketmanager/issues</issues>
+   <readme>https://github.com/Synairgis/childticketmanager/blob/master/README.md</readme>
    <authors>
       <author>Synairgis</author>
       <author>Teclib</author>
    </authors>
    <versions>
       <version>
-         <num>2.1.0</num>
+         <num>2.1.3</num>
          <compatibility>9.4.X</compatibility>
          <compatibility>9.3.X</compatibility>
       </version>
