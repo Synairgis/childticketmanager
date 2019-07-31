@@ -26,25 +26,15 @@
  --------------------------------------------------------------------------
  */
 
-require_once(__DIR__ . '/install/install.php');
-
 /**
  * Plugin install process
  *
  * @return boolean
  */
-function plugin_childticketmanager_install() 
-{
-	global $DB;
+function plugin_childticketmanager_install() {
+   PluginChildticketmanagerConfig::initConfig();
 
-	$migration = new Migration(PLUGIN_CHILDTICKETMANAGER_VERSION);
-
-	$install = new PluginChildticketmanagerInstall();
-	if (!$install->isPluginInstalled()) {
-		return $install->install($migration);
-	}
-	
-	return $install->upgrade($migration);
+   return true;
 }
 
 /**
@@ -52,11 +42,9 @@ function plugin_childticketmanager_install()
  *
  * @return boolean
  */
-function plugin_childticketmanager_uninstall() 
-{
-	global $DB;
-
-	$query = "DELETE FROM glpi_configs WHERE context = 'plugin:childticketmanager'";
-	$DB->queryOrDie($query);
-	return true;
+function plugin_childticketmanager_uninstall() {
+   $config = new Config;
+   return $config->deleteByCriteria([
+      'context' => 'plugin:childticketmanager'
+   ]);
 }

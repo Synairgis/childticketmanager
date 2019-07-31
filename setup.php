@@ -25,8 +25,15 @@
  along with childticketmanager. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-  
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '1.2.1');
+
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.1.3');
+
+// Minimal GLPI version, inclusive
+define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "9.3");
+
+// Maximum GLPI version, exclusive
+define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.0");
+
 
 /**
  * Init hooks of the plugin.
@@ -35,17 +42,24 @@ define('PLUGIN_CHILDTICKETMANAGER_VERSION', '1.2.1');
  * @return void
  */
 function plugin_init_childticketmanager() {
-	global $PLUGIN_HOOKS;
-	
-	$PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
-	
-	$PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/function.js';
-	$PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/lodash.core.min.js';
-	$PLUGIN_HOOKS['add_javascript']['childticketmanager'][] = 'js/childticketmanager.js.php';
+   global $PLUGIN_HOOKS;
 
-	Plugin::registerClass('PluginChildticketmanagerConfig', array('addtabon' => 'Config'));
+   $PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
 
-	$PLUGIN_HOOKS['config_page']['childticketmanager'] = 'front/config.form.php';
+   if (class_exists('PluginChildticketmanagerConfig')) {
+      // load javascript files
+      $PLUGIN_HOOKS['add_javascript']['childticketmanager'] = [
+         'js/function.js',
+         'js/lodash.core.min.js',
+         'js/childticketmanager.js.php',
+      ];
+
+      Plugin::registerClass('PluginChildticketmanagerConfig', [
+         'addtabon' => 'Config'
+      ]);
+
+      $PLUGIN_HOOKS['config_page']['childticketmanager'] = 'front/config.form.php';
+   }
 }
 
 
@@ -62,7 +76,12 @@ function plugin_version_childticketmanager() {
       'author'         => '<a href="http://www.synairgis.com">Synairgis</a>',
       'license'        => '<a href="../plugins/childticketmanager/LICENSE" target="_blank">GPLv3</a>',
       'homepage'       => '',
-      'minGlpiVersion' => '9.1'
+      'requirements'   => [
+         'glpi' => [
+            'min' => PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION,
+            'max' => PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION,
+         ]
+      ]
    ];
 }
 
@@ -73,15 +92,18 @@ function plugin_version_childticketmanager() {
  * @return boolean
  */
 function plugin_childticketmanager_check_prerequisites() {
-   // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION, '9.1', 'lt')) {
-      if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.1');
-      } else {
-         echo __("Ce plugin requiert GLPI >= 9.1");
-      }
+   $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+   $min = version_compare($version, PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION, '>=');
+   $max = version_compare($version, PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION, '<');
+
+   if (!$min || !$max) {
+      echo vsprintf('This plugin requires GLPI >= %1$s and < %2$s.', [
+         PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION,
+         PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION,
+      ]);
       return false;
    }
+
    return true;
 }
 
@@ -93,12 +115,5 @@ function plugin_childticketmanager_check_prerequisites() {
  * @return boolean
  */
 function plugin_childticketmanager_check_config($verbose = false) {
-   if (true) { // Your configuration check
-      return true;
-   }
-
-   if ($verbose) {
-      __('Installé / non configuré', 'childticketmanager');
-   }
-   return false;
+   return true;
 }

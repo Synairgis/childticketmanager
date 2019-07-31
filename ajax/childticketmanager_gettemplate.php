@@ -8,9 +8,5 @@
 
 include ("../../../inc/includes.php");
 
-$ticket = new Ticket();
-$ticket->getFromDB($_POST['tickets_id']);
-
-$template = $ticket->getTicketTemplateToUse(0, $ticket->getField('type'), $_POST['category']);
-
+$template = PluginChildticketmanagerAction::getTemplate($_POST);
 echo json_encode(["template_id" => $template->getID()]);
