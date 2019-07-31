@@ -6,9 +6,10 @@ header("Content-type: application/javascript");
 
 
 //not executed in self-service interface & right verification
-if ($_SESSION['glpiactiveprofile']['interface'] == "central"
-   && Session::haveRight("ticket", CREATE)
-   && Session::haveRight("ticket", UPDATE)) {
+if (isset($_SESSION['glpiactiveprofile']['interface'])
+    && $_SESSION['glpiactiveprofile']['interface'] == "central"
+    && Session::haveRight("ticket", CREATE)
+    && Session::haveRight("ticket", UPDATE)) {
 
    $locale_linkedtickets = _n('Linked ticket', 'Linked tickets', 2);
    $redirect = Config::getConfigurationValues('core', ['backcreated']);
@@ -40,7 +41,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
          .after(ticket_html);
 
       callback();
-};
+   };
 
    childticketmanager_bindClick = _.once(function() {
       $(document).on("click", "#create_child_ticket", _.once(function(e) {
@@ -379,6 +380,26 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
       }
    };
 
+   var createEvents = function() {
+      // Quand on est sur la page du ticket et qu'on le résout/ferme, le bouton s'appelle "update".
+      // Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
+      // C'est pour ça qu'on doit avoir deux bindings pour la même chose
+
+
+      $("input[name='update']").on("click", {
+         'childrenUpdated': false
+      }, childticketmanager_submit);
+      $("form[name=form_ticket], .timeline_box")
+         .find("input[name='add']").on("click", {
+            'ticketStatus': 5,
+            'childrenUpdated': false
+         }, childticketmanager_submit);
+      $("input[name='add_close']").on("click", {
+         'ticketStatus': 6,
+         'childrenUpdated': false
+      }, childticketmanager_submit);
+   };
+
    $(document).ready(function() {
 
       var pageActu = window.location.pathname.split("/").slice(-1)[0];
@@ -391,38 +412,12 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
       }
 
       childticketmanager_addCloneLink(childticketmanager_bindClick);
+      createEvents();
 
       $(".glpi_tabs").on("tabsload", function(event, ui) {
          childticketmanager_addCloneLink(childticketmanager_bindClick);
-
-         // Quand on est sur la page du ticket et qu'on le résout/ferme, le bouton s'appelle "update".
-         // Quand on est sur le traitement du ticket et qu'on met une solution, le bouton s'appelle "add".
-         // C'est pour ça qu'on doit avoir deux bindings pour la même chose
-
-         $("input[name='update']").on("click", {
-            'childrenUpdated': false
-         }, childticketmanager_submit);
-         $("input[name='add']").on("click", {
-            'ticketStatus': 5,
-            'childrenUpdated': false
-         }, childticketmanager_submit);
-         $("input[name='add_close']").on("click", {
-            'ticketStatus': 6,
-            'childrenUpdated': false
-         }, childticketmanager_submit);
+         createEvents();
       });
-
-      $("input[name='update']").on("click", {
-         'childrenUpdated': false
-      }, childticketmanager_submit);
-      $("input[name='add']").on("click", {
-         'ticketStatus': 5,
-         'childrenUpdated': false
-      }, childticketmanager_submit);
-      $("input[name='add_close']").on("click", {
-         'ticketStatus': 6,
-         'childrenUpdated': false
-      }, childticketmanager_submit);
 
       $(document).ajaxComplete(function(event, request, settings) {
 
@@ -432,17 +427,7 @@ if ($_SESSION['glpiactiveprofile']['interface'] == "central"
             var params = settings.data.split("&");
             if (params[0] == "action=viewsubitem"
                && params[1] == "type=Solution") {
-               $("input[name='update']").on("click", {
-                  'childrenUpdated': false
-               }, childticketmanager_submit);
-               $("input[name='add']").on("click", {
-                  'ticketStatus': 5,
-                  'childrenUpdated': false
-               }, childticketmanager_submit);
-               $("input[name='add_close']").on("click", {
-                  'ticketStatus': 6,
-                  'childrenUpdated': false
-               }, childticketmanager_submit);
+               createEvents();
             }
          }
 

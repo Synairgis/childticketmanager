@@ -26,7 +26,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.1.0');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.1.3');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "9.3");
