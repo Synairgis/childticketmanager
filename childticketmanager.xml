@@ -1,18 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <root>
-   <name>childticketmanager</name>
+   <name>Child Ticket Manager</name>
    <key>childticketmanager</key>
    <state>stable</state>
    <logo>https://raw.githubusercontent.com/Synairgis/childticketmanager/master/logo.png</logo>
    <description>
       <short>
-         <en>A plugin that allows you to create child tickets with a predefined template</en>
-         <fr>Un plugin permettant de créer des tickets enfant selon un modèle prédéfini.</fr>
+         <en><![CDATA[A plugin that allows you to create child tickets with a predefined template.]]></en>
+         <fr><![CDATA[Un plugin permettant de créer des tickets enfants selon un modèle prédéfini.]]></fr>
       </short>
       <long>
-         <en>When creating a new child ticket with this plugin, it will automatically check 
-         the given category and assign the defined template to the new ticket upon creation.</en>
-         <fr>Lorsqu'on crée un nouveau ticket enfant grâce à ce plugin, il va automatiquement 
-            rapatrier le modèle défini dans la catégorie spécifiée et l'appliquer à l'enfant.</fr>
+         <en><![CDATA[This plugin is meant to ease the management of parent-child tickets in GLPI.
+            <br />Features:
+            <ul><li>Easily create a child ticket directly from a parent ticket</li>
+            <li>Cascading resolution/closure of child ticket upon parent's status change</li>
+            <li>Easily apply a template to newly created child tickets</li>
+         </ul>]]></en>
+         <fr><![CDATA[Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI.
+            <br />Fonctionnalités :
+            <ul><li>Permet de facilement créer un ticket enfant à partir d'un ticket parent</li>
+            <li>Résolution/fermeture en cascade des tickets enfant au changement de statut du parent</li>
+            <li>Application d'un gabarit aux enfants nouvellement créés</li>
+         </ul>]]></fr>
       </long>
    </description>
    <homepage>https://github.com/Synairgis/childticketmanager</homepage>
@@ -21,7 +30,7 @@
    <readme>https://github.com/Synairgis/childticketmanager/blob/master/README.md</readme>
    <authors>
       <author>Synairgis</author>
-      <author>Teclib</author>
+      <author>TECLIB'</author>
    </authors>
    <versions>
       <version>
@@ -44,12 +53,13 @@
       <lang>fr_FR</lang>
    </langs>
    <license>GPL V3+</license>
+   <category>Helpdesk</category>
    <tags>
       <en>
-         <tag>Ticket</tag>
+         <tag>ticket</tag>
       </en>
       <fr>
-         <tag>Ticket</tag>
+         <tag>ticket</tag>
       </fr>
    </tags>
    <screenshots>
