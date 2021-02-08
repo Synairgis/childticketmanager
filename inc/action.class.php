@@ -193,7 +193,7 @@ class PluginChildticketmanagerAction {
       $ticket = new Ticket();
       $ticket->getFromDB((int) $params['tickets_id']);
 
-      return $ticket->getTicketTemplateToUse(0, $ticket->getField('type'), $params['category']);
+      return $ticket->getITILTemplateToUse(0, $ticket->getField('type'), $params['category']);
    }
 
 
@@ -212,14 +212,14 @@ JAVASCRIPT;
 
       $cond = "";
       if ($ticket->fields["type"] == Ticket::INCIDENT_TYPE) {
-         $cond = "`is_incident` = 1";
+         $cond = ["is_incident" => "1"];
       } else if ($ticket->fields["type"] == Ticket::DEMAND_TYPE) {
-         $cond = "`is_request` = 1";
+         $cond = ["is_request" => "1"];
       }
 
       ITILCategory::dropdown([
          'comments'  => false,
-         'name'      => 'childticketmanager_category',
+         'name'      => 'category',
          'condition' => $cond,
          'entity'    => $ticket->fields["entities_id"],
          'on_change' => $JS
@@ -229,14 +229,6 @@ JAVASCRIPT;
          'value' => $tickets_id
       ]);
 
-      if ($configs['childticketmanager_display_tmpl_link'] == 1 ) {
-         echo "&nbsp;";
-         echo "&nbsp;";
-         echo Html::submit(__("Voir gabarit", 'childticketmanager'), [
-            'id'    => 'childticketmanager_templ',
-            'style' => 'display:none'
-         ]);
-      }
       echo "&nbsp;";
       echo "&nbsp;";
       echo html::submit( __('Créer enfant', 'childticketmanager'), [
@@ -253,7 +245,7 @@ JAVASCRIPT;
       $parent_ticket->getFromDB((int) $params['tickets_id']);
 
       $new_ticket = new Ticket();
-      $template = $new_ticket->getTicketTemplateToUse(0, $parent_ticket->fields['type'], $params['category']);
+      $template = $new_ticket->getITILTemplateToUse(0, $parent_ticket->fields['type'], $params['category']);
 
       $new_ticket_values = $template->predefined;
 

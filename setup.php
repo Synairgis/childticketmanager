@@ -26,13 +26,13 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.1.3');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.2.0');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "9.3");
+define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "9.5");
 
 // Maximum GLPI version, exclusive
-define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.0");
+define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "9.6");
 
 
 /**

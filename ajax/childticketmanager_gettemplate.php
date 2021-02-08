@@ -9,4 +9,4 @@
 include ("../../../inc/includes.php");
 
 $template = PluginChildticketmanagerAction::getTemplate($_POST);
-echo json_encode(["template_id" => $template->getID()]);
+echo $template->getID();
