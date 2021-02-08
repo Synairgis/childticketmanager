@@ -17,6 +17,7 @@ if (isset($_SESSION['glpiactiveprofile']['interface'])
 
    $testing = GLPI_ROOT;
    $version = GLPI_VERSION;
+   $glpiLayout = $_SESSION['glpilayout'];
 
    $JS = <<<JAVASCRIPT
 
@@ -62,7 +63,7 @@ if (isset($_SESSION['glpiactiveprofile']['interface'])
                      dataType: "json",
                      data: {
                         'tickets_id': getUrlParameter('id'),
-                        'category': $("[id^='dropdown_childticketmanager_category']").val()
+                        'category': $("[name^='category']").val()
                      },
                      success: function(response, opts) {
                         if ($redirect == 1) {
@@ -414,10 +415,12 @@ if (isset($_SESSION['glpiactiveprofile']['interface'])
       childticketmanager_addCloneLink(childticketmanager_bindClick);
       createEvents();
 
-      $(".glpi_tabs").on("tabsload", function(event, ui) {
-         childticketmanager_addCloneLink(childticketmanager_bindClick);
-         createEvents();
-      });
+      if('{$glpiLayout}' == 'lefttab'){
+         $(".glpi_tabs").on("tabsload", function(event, ui) {
+            childticketmanager_addCloneLink(childticketmanager_bindClick);
+            createEvents();
+         });
+      }
 
       $(document).ajaxComplete(function(event, request, settings) {
 
