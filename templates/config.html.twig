@@ -7,12 +7,12 @@
 
 {% block config_fields %}
 
-{{ fields.largeTitle('PluginChildticketmanagerConfig'|itemtype_name, 'fa fa-link', true) }}
+{{ fields.largeTitle(__('Child Tickets Manager', 'childticketmanager'), 'fa fa-link', true) }}
 {{ fields.hiddenField('config_context', config_context, '', {'no_label': true}) }}
 <div class="row ps-4">
-    {{ fields.dropdownYesNo('childticketmanager_close_child', current_config['childticketmanager_close_child'] ?? false, __("Close child tickets when parent is closed", 'childticketmanager'), field_options) }} {#Fermer les tickets enfants à la fermeture du parent#}
-    {{ fields.dropdownYesNo('childticketmanager_resolve_child', current_config['childticketmanager_resolve_child'] ?? false, __("Solve child tickets when parent is solved", 'childticketmanager'), field_options) }} {# Résoudre les tickets enfants à la résolution du parent #}
-    {{ fields.dropdownYesNo('childticketmanager_display_tmpl_link', current_config['childticketmanager_display_tmpl_link'] ?? false, __("Show link to template", 'childticketmanager'), field_options) }} {# Afficher le lien vers le gabarit #}
+    {{ fields.dropdownYesNo('childticketmanager_close_child', current_config['childticketmanager_close_child'] ?? false, __("Close child tickets when parent is closed", 'childticketmanager'), field_options) }}
+    {{ fields.dropdownYesNo('childticketmanager_resolve_child', current_config['childticketmanager_resolve_child'] ?? false, __("Solve child tickets when parent is solved", 'childticketmanager'), field_options) }}
+    {{ fields.dropdownYesNo('childticketmanager_display_tmpl_link', current_config['childticketmanager_display_tmpl_link'] ?? false, __("Show link to template", 'childticketmanager'), field_options) }}
 </div>
 
 {% endblock %}
