@@ -72,7 +72,7 @@ function plugin_init_childticketmanager() {
  */
 function plugin_version_childticketmanager() {
    return [
-      'name'           => __('Child Tickets Manager', 'childticketmanager'),//Gestionnaire de tickets enfant
+      'name'           => __('Child Tickets Manager', 'childticketmanager'),
       'version'        => PLUGIN_CHILDTICKETMANAGER_VERSION,
       'author'         => '<a href="http://www.synairgis.com">Synairgis</a>',
       'license'        => '<a href="../plugins/childticketmanager/LICENSE" target="_blank">GPLv3</a>',

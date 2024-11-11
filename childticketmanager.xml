@@ -5,14 +5,40 @@
    <logo>https://raw.githubusercontent.com/Synairgis/childticketmanager/master/logo.png</logo>
    <description>
       <short>
-         <en>A plugin that allows you to create child tickets with a selected category's template, and to solve/close them along their parent.</en>
-         <fr>Un plugin permettant de créer des tickets enfants selon le modèle d'une catgorie choisie et de résoudre/clore ceux-ci avec le parent.</fr>
+         <en><![CDATA[This plugin is meant to ease the management of parent-child tickets in GLPI. It adds an option to the standard linked ticket GLPI feature which can generate a new child ticket directly from the current one.]]></en>
+         <fr><![CDATA[Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI. Il ajoute une option à la fonctionnalité de liaison de tickets native à GLPI permettant de créer un nouveau ticket enfant directement depuis le ticket courant.]]></fr>
       </short>
       <long>
-         <en>When creating a new child ticket with this plugin, it will automatically check 
-         the given category and assign the defined template to the new ticket upon creation.</en>
-         <fr>Lorsqu'on crée un nouveau ticket enfant grâce à ce plugin, il va automatiquement 
-            rapatrier le modèle défini dans la catégorie spécifiée et l'appliquer à l'enfant.</fr>
+         <en>
+            This plugin is meant to ease the management of parent-child tickets in GLPI. It adds an option to the standard linked ticket GLPI feature which can generate a new child ticket directly from the current one.
+
+            It allows to:
+
+            1) Easily create a child ticket directly from a parent ticket
+            2) Cascade the resolution/closure of child ticket upon parent's status change
+            3) Easily apply a template to newly created child tickets
+
+            Once installed, you can configure wether the plugin:
+
+            - closes child tickets upon parent's closure;
+            - resolves child tickets upon parent's resolution;
+            - diplay a link to the selected category's template.
+         </en>
+         <fr>
+            Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI. Il ajoute une option à la fonctionnalité de liaison de tickets native à GLPI permettant de créer un nouveau ticket enfant directement depuis le ticket courant.
+
+            Il permet de:
+
+            1) Facilement créer un ticket enfant à partir d'un ticket parent
+            2) Résoudre et/ou fermer en cascade des tickets enfant au changement de statut du parent
+            3) Appliquer un gabarit aux enfants nouvellement créés
+
+            Une fois installé, vous pouvez configurer le plugin afin qu'il :
+
+            - ferme les tickets enfants lorsque le parent est clos;
+            - résolve les tickets enfants lorsque le parent est résolu;
+            - affiche un lien vers le gabarit de la catégorie sélectionnée.
+         </fr>
       </long>
    </description>
    <homepage>https://github.com/Synairgis/childticketmanager</homepage>
@@ -21,7 +47,7 @@
    <readme>https://github.com/Synairgis/childticketmanager/blob/master/README.md</readme>
    <authors>
       <author>Synairgis</author>
-      <author>Teclib</author>
+      <author>TECLIB'</author>
    </authors>
    <versions>
       <version>
@@ -33,6 +59,7 @@
          <compatibility>9.4.X</compatibility>
          <compatibility>9.3.X</compatibility>
       </version>
+      <version>
          <num>2.1.0</num>
          <compatibility>9.4.X</compatibility>
          <compatibility>9.3.X</compatibility>

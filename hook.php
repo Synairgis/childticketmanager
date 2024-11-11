@@ -80,12 +80,12 @@ function plugin_childticketmanager_ticket_update(Ticket $ticket)
       ]
    ]) ?: [] as $row) {
       $child = Ticket::getById($row['id']);
-      if (!$child->canUpdateItem()) continue; // TODO: Display an error?
+      if (!$child->canUpdateItem()) continue;
       if ($do_solve && $ticket->isSolved() && $child->isNotSolved()) {
          (new ITILSolution)->add([
             'itemtype'  => Ticket::getType(),
             'items_id'  => $child->getID(),
-            'content'   => Sanitizer::sanitize(sprintf(__("Solved through ticket %s", 'childticketmanager'), $ticket->getID())), //Résolution par le biais du billet %s
+            'content'   => Sanitizer::sanitize(sprintf(__("Solved through ticket %s", 'childticketmanager'), $ticket->getID())),
          ]);
          Session::addMessageAfterRedirect(sprintf(__('%1$s: %2$s'), __('Child ticket successfully resolved', 'childticketmanager'), $child->getLink()));
       } elseif ($do_close && $ticket->isClosed() && !$child->isClosed()) {
@@ -93,7 +93,7 @@ function plugin_childticketmanager_ticket_update(Ticket $ticket)
             'itemtype'          => $child::getType(),
             'items_id'          => $child->getID(),
             'requesttypes_id'   => $child->getID(),
-            'content'           => Sanitizer::sanitize(sprintf(__("Closed through ticket %s", 'childticketmanager'), $ticket->getID())),//Fermeture par le biais du billet %s
+            'content'           => Sanitizer::sanitize(sprintf(__("Closed through ticket %s", 'childticketmanager'), $ticket->getID())),
             'add_close'         => true, // Close if already solved
          ]);
          if ($child->isNotSolved()) { // Manually close since it wasn't awaiting for an approval to close

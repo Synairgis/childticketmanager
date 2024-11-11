@@ -75,7 +75,7 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             HTML : '';
 
             // HTML UI to add in the Linked Tickets section 
-            // (between `` because we use jQuery to insert it, including the javascripts)
+            // (between backticks (``) because we use jQuery to insert it into the DOM, including the javascripts)
             $ticket_html = '`' . <<<HTML
             <div class="input-group mt-2">
                 <span class="input-group-text border-0 ps-1 gap-1" data-bs-toggle="tooltip" data-bs-placement="left" title="{$typename}">
