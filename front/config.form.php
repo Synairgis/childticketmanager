@@ -1,16 +1,16 @@
 <?php
+/**
+ * Redirects to the Configuration tab of the Plugin
+ */
+
 require_once ('../../../inc/includes.php');
 
 // Check if current user have config right
 Session::checkRight("config", UPDATE);
 
 // Check if plugin is activated...
-$plugin = new Plugin();
-if (!$plugin->isActivated('childticketmanager')) {
-   Html::displayNotFoundError();
-}
+if (!(new Plugin)->isActivated('childticketmanager')) Html::displayNotFoundError();
 
-//Search::show('PluginchildticketmanagerConfig');
-Html::redirect($CFG_GLPI["root_doc"]."/front/config.form.php?forcetab=PluginChildticketmanagerConfig\$1");
+$tab = '?' . http_build_query(['forcetab' => PluginChildticketmanagerConfig::class]) . '$1';
+Html::redirect(Config::getFormURL() . $tab);
 
-Html::footer();

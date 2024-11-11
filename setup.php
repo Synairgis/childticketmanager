@@ -26,13 +26,15 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Plugin\Hooks;
+
 define('PLUGIN_CHILDTICKETMANAGER_VERSION', '2.1.3');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "9.3");
+define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "10.0");
 
 // Maximum GLPI version, exclusive
-define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.0");
+define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.1");
 
 
 /**
@@ -44,14 +46,12 @@ define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.0");
 function plugin_init_childticketmanager() {
    global $PLUGIN_HOOKS;
 
-   $PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
+   $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['childticketmanager'] = true;
 
    if (class_exists('PluginChildticketmanagerConfig')) {
       // load javascript files
-      $PLUGIN_HOOKS['add_javascript']['childticketmanager'] = [
-         'js/function.js',
-         'js/lodash.core.min.js',
-         'js/childticketmanager.js.php',
+      $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['childticketmanager'] = [
+         'js/ticket_form_linked_tickets.js.php',
       ];
 
       Plugin::registerClass('PluginChildticketmanagerConfig', [
@@ -59,6 +59,7 @@ function plugin_init_childticketmanager() {
       ]);
 
       $PLUGIN_HOOKS['config_page']['childticketmanager'] = 'front/config.form.php';
+      $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['childticketmanager'] = [Ticket::class => 'plugin_childticketmanager_ticket_update'];
    }
 }
 
@@ -71,7 +72,7 @@ function plugin_init_childticketmanager() {
  */
 function plugin_version_childticketmanager() {
    return [
-      'name'           => __('Gestionnaire de tickets enfant', 'childticketmanager'),
+      'name'           => __('Child Tickets Manager', 'childticketmanager'),//Gestionnaire de tickets enfant
       'version'        => PLUGIN_CHILDTICKETMANAGER_VERSION,
       'author'         => '<a href="http://www.synairgis.com">Synairgis</a>',
       'license'        => '<a href="../plugins/childticketmanager/LICENSE" target="_blank">GPLv3</a>',

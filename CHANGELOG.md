@@ -1,3 +1,9 @@
+<a name="3.0.0"></a>
+
+### Features
+
+- Updated the code to work with GLPI 10.0.X. Use previous versions for use with previous GLPI versions. 
+
 <a name="2.0.4"></a>
 
 - Correction pour régler le bogue d'insertion d'image lors de l'ajout d'un suivi dans un ticket

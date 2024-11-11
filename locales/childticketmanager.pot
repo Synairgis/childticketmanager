@@ -1,69 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: childticketmanager\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-23 14:41-0500\n"
-"PO-Revision-Date: 2024-01-23 14:44-0500\n"
-"Last-Translator: François Robertson <f.robertson@synairgis.com>\n"
-"Language-Team: \n"
-"Language: fr\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.2\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: hook.php:88
 #, php-format
 msgid "Solved through ticket %s"
-msgstr "Résolution par le biais du billet %s"
+msgstr ""
 
 #: hook.php:90
 msgid "Child ticket successfully resolved"
-msgstr "Ticket enfant résolu avec succès"
+msgstr ""
 
 #: hook.php:96
 #, php-format
 msgid "Closed through ticket %s"
-msgstr "Fermeture par le biais du billet %s"
+msgstr ""
 
 #: hook.php:108
 msgid "Child ticket successfully closed"
-msgstr "Ticket enfant fermé avec succès"
+msgstr ""
 
 #: inc/config.class.php:8
 msgid "Child ticket"
 msgid_plural "Child tickets"
-msgstr[0] "Ticket enfant"
-msgstr[1] "Tickets enfants"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ticket_form_linked_tickets.js.php:22
 msgid "Display Template"
-msgstr "Afficher le gabarit"
+msgstr ""
 
 #: js/ticket_form_linked_tickets.js.php:23
 msgid "+Child"
-msgstr "+Enfant"
+msgstr ""
 
 #: js/ticket_form_linked_tickets.js.php:24
 msgid "Create child ticket from category"
-msgstr "Créer ticket enfant depuis la catégorie"
+msgstr ""
 
 #: setup.php:75
 msgid "Child Tickets Manager"
-msgstr "Gestionnaire de tickets enfants"
+msgstr ""
 
 #: templates/config.html.twig:13
 msgid "Close child tickets when parent is closed"
-msgstr "Fermer  les tickets enfants à la fermeture du parent"
+msgstr ""
 
 #: templates/config.html.twig:14
 msgid "Solve child tickets when parent is solved"
-msgstr "Résoudre les tickets enfants à la résolution du parent"
+msgstr ""
 
 #: templates/config.html.twig:15
 msgid "Show link to template"
-msgstr "Afficher le lien vers le gabarit"
+msgstr ""

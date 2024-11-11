@@ -1,60 +1,71 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2024.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-04-26 14:31-0400\n"
-"PO-Revision-Date: 2018-04-26 14:32-0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: en_CA\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-23 14:41-0500\n"
+"PO-Revision-Date: 2024-01-23 14:45-0500\n"
+"Last-Translator: Fran�ois Robertson <f.robertson@synairgis.com>\n"
+"Language-Team: none\n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.7\n"
-"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Generator: Poedit 3.4.2\n"
 
-#: ajax/childticketmanager.php:36
-msgid "Voir gabarit"
-msgstr "See template"
+#: hook.php:88
+#, php-format
+msgid "Solved through ticket %s"
+msgstr "Solved through ticket %s"
 
-#: ajax/childticketmanager.php:40
-msgid "Créer enfant"
-msgstr "Create child"
+#: hook.php:90
+msgid "Child ticket successfully resolved"
+msgstr "Child ticket successfully resolved"
 
-#: ajax/childticketmanager_childtix.php:64
-msgid "Ticket "
-msgstr "Ticket "
+#: hook.php:96
+#, php-format
+msgid "Closed through ticket %s"
+msgstr "Closed through ticket %s"
 
-#: ajax/childticketmanager_childtix.php:64
-msgid " mis à jour"
-msgstr " updated"
+#: hook.php:108
+msgid "Child ticket successfully closed"
+msgstr "Child ticket successfully closed"
 
-#: config.form.php:14 front/config.form.php:14 inc/config.class.php:12
-msgid "Tickets enfants"
-msgstr "Child tickets"
+#: inc/config.class.php:8
+msgid "Child ticket"
+msgid_plural "Child tickets"
+msgstr[0] "Child ticket"
+msgstr[1] "Child tickets"
 
-#: inc/config.class.php:60
-msgid "Fermer les tickets enfants à la fermeture du parent"
-msgstr "Close child tickets when parent ticket is closed"
+#: js/ticket_form_linked_tickets.js.php:22
+msgid "Display Template"
+msgstr "Display Template"
 
-#: inc/config.class.php:66
-msgid "Résoudre les tickets enfants à la résolution du parent"
-msgstr "Resolve child tickets when parent is resolved"
+#: js/ticket_form_linked_tickets.js.php:23
+msgid "+Child"
+msgstr "+Child"
 
-#: inc/config.class.php:73
-msgid "Afficher le lien vers le gabarit"
-msgstr "Show template link"
+#: js/ticket_form_linked_tickets.js.php:24
+msgid "Create child ticket from category"
+msgstr "Create child ticket from category"
 
-#: setup.php:60
-msgid "Gestionnaire de tickets enfant"
-msgstr "Child ticket manager"
+#: setup.php:75
+msgid "Child Tickets Manager"
+msgstr "Child Tickets Manager"
 
-#: setup.php:81
-msgid "Ce plugin requiert GLPI >= 9.1"
-msgstr "This plugin requires GLPI >= 9.1"
+#: templates/config.html.twig:13
+msgid "Close child tickets when parent is closed"
+msgstr "Close child tickets when parent is closed"
 
-#: setup.php:101
-msgid "Installé / non configuré"
-msgstr "Installed / not configured"
+#: templates/config.html.twig:14
+msgid "Solve child tickets when parent is solved"
+msgstr "Solve child tickets when parent is solved"
+
+#: templates/config.html.twig:15
+msgid "Show link to template"
+msgstr "Show link to template"
