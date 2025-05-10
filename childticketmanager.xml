@@ -10,6 +10,7 @@
       </short>
       <long>
          <en>
+            <![CDATA[ 
             This plugin is meant to ease the management of parent-child tickets in GLPI. It adds an option to the standard linked ticket GLPI feature which can generate a new child ticket directly from the current one.
 
             It allows to:
@@ -23,8 +24,10 @@
             - closes child tickets upon parent's closure;
             - resolves child tickets upon parent's resolution;
             - diplay a link to the selected category's template.
+            ]]>
          </en>
          <fr>
+            <![CDATA[ 
             Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI. Il ajoute une option à la fonctionnalité de liaison de tickets native à GLPI permettant de créer un nouveau ticket enfant directement depuis le ticket courant.
 
             Il permet de:
@@ -38,6 +41,7 @@
             - ferme les tickets enfants lorsque le parent est clos;
             - résolve les tickets enfants lorsque le parent est résolu;
             - affiche un lien vers le gabarit de la catégorie sélectionnée.
+            ]]>
          </fr>
       </long>
    </description>
