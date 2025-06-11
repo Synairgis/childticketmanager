@@ -36,10 +36,14 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-if (($parent = Ticket::getById($_POST['ticket'])) === false) exit();
+$ticket_id      = filter_var($_POST['ticket'], FILTER_VALIDATE_INT) ?: 0;
+$type           = filter_var($_POST['type'], FILTER_VALIDATE_INT) ?: Ticket::DEMAND_TYPE;
+$category_id    = filter_var($_POST['category'], FILTER_VALIDATE_INT) ?: 0;
+
+if (($parent = Ticket::getById($ticket_id)) === false) exit();
 
 $child = new Ticket;
-$input = $child->getITILTemplateToUse(0, $_POST['type'], $_POST['category'])->predefined;
+$input = $child->getITILTemplateToUse(0, $type, $category_id)->predefined;
 
 foreach ([
     'entities_id',
@@ -53,7 +57,7 @@ foreach ([
 ] as $key) {
     $input[$key] = $input[$key] ?? $parent->getField($key);
 }
-$input['itilcategories_id'] = $_POST['category'];
+$input['itilcategories_id'] = $category_id;
 $input['status'] = $input['status'] ?? Ticket::INCOMING;
 $input['requesttypes_id'] = $input['requesttypes_id'] ?? 1; // Helpdesk
 $input['_add'] = true; // This adds the standard redirect message

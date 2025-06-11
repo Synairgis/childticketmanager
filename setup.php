@@ -28,7 +28,7 @@
 
 use Glpi\Plugin\Hooks;
 
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '3.0.0');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '3.0.1');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "10.0");

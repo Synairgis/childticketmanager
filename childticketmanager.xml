@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <root>
    <name>Child Ticket Manager</name>
    <key>childticketmanager</key>
@@ -55,7 +56,7 @@
    </authors>
    <versions>
       <version>
-         <num>3.0.0</num>
+         <num>3.0.1</num>
          <compatibility>10.0.X</compatibility>
       </version>
       <version>

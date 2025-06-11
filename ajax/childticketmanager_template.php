@@ -33,7 +33,13 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-if (($ticket = Ticket::getById($_POST['ticket']??0)) === false) exit('{}');
-$template = $ticket->getITILTemplateToUse(0, $_POST['type']??$ticket->getField('type'), $_POST['category']??0);
+$ticket_id      = filter_var($_POST['ticket'], FILTER_VALIDATE_INT) ?: 0;
+
+if (($ticket = Ticket::getById($ticket_id)) === false) exit('{}');
+
+$type           = filter_var($_POST['type'], FILTER_VALIDATE_INT) ?: $ticket->getField('type');
+$category_id    = filter_var($_POST['category'], FILTER_VALIDATE_INT) ?: 0;
+
+$template = $ticket->getITILTemplateToUse(0, $type, $category_id);
 
 exit(json_encode(['template_id' => $template->getID()]));
