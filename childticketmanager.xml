@@ -16,9 +16,9 @@ This plugin is meant to ease the management of parent-child tickets in GLPI. It 
 
 It allows to:
 
-1) Easily create a child ticket directly from a parent ticket
-2) Cascade the resolution/closure of child ticket upon parent's status change
-3) Easily apply a template to newly created child tickets
+1. Easily create a child ticket directly from a parent ticket
+2. Cascade the resolution/closure of child ticket upon parent's status change
+3. Easily apply a template to newly created child tickets
 
 Once installed, you can configure wether the plugin:
 
@@ -33,9 +33,9 @@ Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI. Il 
 
 Il permet de :
 
-1) Facilement créer un ticket enfant à partir d'un ticket parent
-2) Résoudre et/ou fermer en cascade des tickets enfant au changement de statut du parent
-3) Appliquer un gabarit aux enfants nouvellement créés
+1. Facilement créer un ticket enfant à partir d'un ticket parent
+2. Résoudre et/ou fermer en cascade des tickets enfant au changement de statut du parent
+3. Appliquer un gabarit aux enfants nouvellement créés
 
 Une fois installé, vous pouvez configurer le plugin afin qu'il :
 
