@@ -1,3 +1,9 @@
+## 3.0.2
+
+### Bugfix
+
+- As it was before 3.0.x, assign current user as requester if template has no requester when creating a child ticket.
+
 ## 3.0.1
 
 ### Security

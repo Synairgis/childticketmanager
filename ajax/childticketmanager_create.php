@@ -45,6 +45,7 @@ if (($parent = Ticket::getById($ticket_id)) === false) exit();
 $child = new Ticket;
 $input = $child->getITILTemplateToUse(0, $type, $category_id)->predefined;
 
+// Get following values from template, if exist, otherwise from parent
 foreach ([
     'entities_id',
     'type',
@@ -57,13 +58,21 @@ foreach ([
 ] as $key) {
     $input[$key] = $input[$key] ?? $parent->getField($key);
 }
-$input['itilcategories_id'] = $category_id;
-$input['status'] = $input['status'] ?? Ticket::INCOMING;
+// Get values from template, if exist, otherwise use default values
+$input['status'] = $input['status'] ?? CommonItilObject::INCOMING;
 $input['requesttypes_id'] = $input['requesttypes_id'] ?? 1; // Helpdesk
+if (!isset($input['_actors']['requester'])) {
+    $input['_actors']['requester'][] = [
+        'itemtype' => \User::getType(),
+        'items_id' => Session::getLoginUserID(),
+    ];
+}
+// Set values
+$input['itilcategories_id'] = $category_id;
 $input['_add'] = true; // This adds the standard redirect message
-
+// Sanitize strings and arrays
 foreach ($input as $key => $val) {
-    $input[$key] = ($key == '_documents_id' ? $val : Sanitizer::dbEscape($val));
+    $input[$key] = Sanitizer::dbEscapeRecursive([$val])[0];
 }
 
 $child->add($input);
