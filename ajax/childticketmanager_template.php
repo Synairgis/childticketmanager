@@ -26,16 +26,17 @@
  *  --------------------------------------------------------------------------
  */
 
-$AJAX_INCLUDE = 1;
-include('../../../inc/includes.php');
-header("Content-Type: text/html; charset=UTF-8");
+header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 $ticket_id      = filter_var($_POST['ticket'], FILTER_VALIDATE_INT) ?: 0;
 
-if (($ticket = Ticket::getById($ticket_id)) === false) exit('{}');
+if (($ticket = Ticket::getById($ticket_id)) === false) {
+    echo json_encode(['template_id' => 0]);
+    return;
+}
 
 $type           = filter_var($_POST['type'], FILTER_VALIDATE_INT) ?: $ticket->getField('type');
 $category_id    = filter_var($_POST['category'], FILTER_VALIDATE_INT) ?: 0;

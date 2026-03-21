@@ -7,9 +7,9 @@
 
 {% block config_fields %}
 
-{{ fields.largeTitle(__('Child Tickets Manager', 'childticketmanager'), 'fa fa-link', true) }}
+{{ fields.largeTitle(__('Child Tickets Manager', 'childticketmanager'), 'ti ti-hierarchy', true) }}
 {{ fields.hiddenField('config_context', config_context, '', {'no_label': true}) }}
-<div class="row ps-4">
+<div class="row ms-3">
     {{ fields.dropdownYesNo('childticketmanager_close_child', current_config['childticketmanager_close_child'] ?? false, __("Close child tickets when parent is closed", 'childticketmanager'), field_options) }}
     {{ fields.dropdownYesNo('childticketmanager_resolve_child', current_config['childticketmanager_resolve_child'] ?? false, __("Solve child tickets when parent is solved", 'childticketmanager'), field_options) }}
     {{ fields.dropdownYesNo('childticketmanager_display_tmpl_link', current_config['childticketmanager_display_tmpl_link'] ?? false, __("Show link to template", 'childticketmanager'), field_options) }}

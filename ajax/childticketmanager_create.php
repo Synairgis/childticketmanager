@@ -26,12 +26,7 @@
  *  --------------------------------------------------------------------------
  */
 
-$AJAX_INCLUDE = 1;
-include('../../../inc/includes.php');
-
-use Glpi\Toolbox\Sanitizer;
-
-header("Content-Type: text/html; charset=UTF-8");
+header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
@@ -40,7 +35,10 @@ $ticket_id      = filter_var($_POST['ticket'], FILTER_VALIDATE_INT) ?: 0;
 $type           = filter_var($_POST['type'], FILTER_VALIDATE_INT) ?: Ticket::DEMAND_TYPE;
 $category_id    = filter_var($_POST['category'], FILTER_VALIDATE_INT) ?: 0;
 
-if (($parent = Ticket::getById($ticket_id)) === false) exit();
+if (($parent = Ticket::getById($ticket_id)) === false) {
+    echo json_encode(['error' => 'Ticket not found']);
+    return;
+}
 
 $child = new Ticket;
 $input = $child->getITILTemplateToUse(0, $type, $category_id)->predefined;
@@ -70,11 +68,6 @@ if (!isset($input['_actors']['requester'])) {
 // Set values
 $input['itilcategories_id'] = $category_id;
 $input['_add'] = true; // This adds the standard redirect message
-// Sanitize strings and arrays
-foreach ($input as $key => $val) {
-    $input[$key] = Sanitizer::dbEscapeRecursive([$val])[0];
-}
-
 $child->add($input);
 (new Ticket_Ticket)->add([
     'tickets_id_1'  => $child->getID(),

@@ -28,13 +28,13 @@
 
 use Glpi\Plugin\Hooks;
 
-define('PLUGIN_CHILDTICKETMANAGER_VERSION', '3.0.2');
+define('PLUGIN_CHILDTICKETMANAGER_VERSION', '4.0.0');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "10.0");
+define("PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION", "11.0");
 
 // Maximum GLPI version, exclusive
-define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.1");
+define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "12.0");
 
 
 /**
@@ -46,7 +46,7 @@ define("PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION", "10.1");
 function plugin_init_childticketmanager() {
    global $PLUGIN_HOOKS;
 
-   $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['childticketmanager'] = true;
+   // Note: Hooks::CSRF_COMPLIANT was deprecated in GLPI 11.0 and should not be used.
 
    if (class_exists('PluginChildticketmanagerConfig')) {
       // load javascript files
@@ -88,7 +88,7 @@ function plugin_version_childticketmanager() {
 
 /**
  * Check pre-requisites before install
- * OPTIONNAL, but recommanded
+ * OPTIONAL, but recommended
  *
  * @return boolean
  */
@@ -98,10 +98,11 @@ function plugin_childticketmanager_check_prerequisites() {
    $max = version_compare($version, PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION, '<');
 
    if (!$min || !$max) {
-      echo vsprintf('This plugin requires GLPI >= %1$s and < %2$s.', [
+      Plugin::messageIncompatible(
+         'core',
          PLUGIN_CHILDTICKETMANAGER_MIN_GLPI_VERSION,
-         PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION,
-      ]);
+         PLUGIN_CHILDTICKETMANAGER_MAX_GLPI_VERSION
+      );
       return false;
    }
 

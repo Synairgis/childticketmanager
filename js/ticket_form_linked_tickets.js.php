@@ -26,12 +26,14 @@
  *  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
 header('Content-type: application/javascript');
 
 function plugin_childticketmanager_ticket_form_linked_tickets()
 {
     // On ticket form only
+    // HTTP_REFERER may be absent depending on browser/proxy strict-origin policy
+    if (!isset($_SERVER['HTTP_REFERER'])) return;
+
     if (isset($_SESSION['glpiactiveprofile']['interface'])
         && Session::getCurrentInterface() == 'central'
         && Session::haveRight('ticket', CREATE)
@@ -43,7 +45,8 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
         if (isset($params['id'])){
 
             // Variables to insert in the Heredoc sections.
-            $baseurl = Plugin::getWebDir('childticketmanager', false);
+            // Plugin::getWebDir() is deprecated in GLPI 11 -- use literal path instead.
+            $baseurl = '/plugins/childticketmanager';
             $typename = PluginChildticketmanagerConfig::getTypeName();
             $template_btn_label = __("Display Template",'childticketmanager');
             $child_label = __('+Child', 'childticketmanager');
@@ -53,39 +56,39 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             $conf = PluginChildticketmanagerConfig::getConfig();
             $is_template_shown = ($conf['childticketmanager_display_tmpl_link'] ? 1 : 0);
             $is_backcreated = Config::getConfigurationValue('core', 'backcreated'); // Go to created item after creation
-            
+
             // Target element MUST be a SPAN for the ITILCategory::dropdown() to work correctly when Type changes.
             $category_placeholder = <<<HTML
             <span id="childticketmanager_category_placeholder"></span>
             HTML;
-            
+
             // Optional link to the selected category's template, if one exists.
             $template_btn = $is_template_shown ? <<<HTML
-            <a 
+            <a
                 id="childticketmanager_showtemplate"
                 href="#"
-                class="dropdown_tooltip btn btn btn-outline-secondary px-1"
+                class="btn btn-outline-secondary px-1"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 title="{$template_btn_label}"
             >
                 <i class="fa-fw ti ti-template"></i>
-                <span class="sr-only">{$template_btn_label}</span>
+                <span class="visually-hidden">{$template_btn_label}</span>
             </a>
             HTML : '';
 
-            // HTML UI to add in the Linked Tickets section 
-            // (between backticks (``) because we use jQuery to insert it into the DOM, including the javascripts)
+            // HTML UI to add in the Linked Tickets section
+            // (between backticks (``) because we use jQuery to insert it into the DOM, including the javascripts)
             $ticket_html = '`' . <<<HTML
             <div class="input-group mt-2">
                 <span class="input-group-text border-0 ps-1 gap-1" data-bs-toggle="tooltip" data-bs-placement="left" title="{$typename}">
-                    <i class="fa fa-ticket"></i>
+                    <i class="ti ti-ticket"></i>
                 </span>
                 {$category_placeholder}
                 {$template_btn}
-                <button 
+                <button
                     id="childticketmanager_create"
-                    type="button" 
+                    type="button"
                     class="btn btn-outline-secondary"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
@@ -97,19 +100,19 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             // Function to update the URL of the "Show Template" button, if shown (config).
             $template_action = $is_template_shown ? <<<JAVASCRIPT
             var glpi_plugin_childticketmanager_updateTemplateId = function (cat) {
-                $.post('/{$baseurl}/ajax/childticketmanager_template.php', // url
+                \$.post('{$baseurl}/ajax/childticketmanager_template.php', // url
                 { // data
-                    'ticket':   $('[name=id]').val(),
-                    'category': (cat === undefined ? $('[name=childticketmanager_category]').val() : cat),
-                    'type':     $('[name=type]').val(),
+                    'ticket':   \$('[name=id]').val(),
+                    'category': (cat === undefined ? \$('[name=childticketmanager_category]').val() : cat),
+                    'type':     \$('[name=type]').val(),
                 },
                 (json)=>{ // success
                     if (json.template_id === undefined || json.template_id <= 0) {
-                        $("#childticketmanager_showtemplate").hide();
-                        $("#childticketmanager_showtemplate").attr('href', '#');
+                        \$("#childticketmanager_showtemplate").hide();
+                        \$("#childticketmanager_showtemplate").attr('href', '#');
                     } else {
-                        $("#childticketmanager_showtemplate").show();
-                        $("#childticketmanager_showtemplate").attr('href', "tickettemplate.form.php?id=" + json.template_id);
+                        \$("#childticketmanager_showtemplate").show();
+                        \$("#childticketmanager_showtemplate").attr('href', "front/tickettemplate.form.php?id=" + json.template_id);
                     }
                 }, 'json');
             };
@@ -119,12 +122,12 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             echo <<<JAVASCRIPT
             {$template_action}
             var glpi_plugin_childticketmanager_updateCategoryDropdown = function (cat) {
-                $("#childticketmanager_category_placeholder").load(
-                    '/{$baseurl}/ajax/childticketmanager_categorydropdown.php', // url
+                \$("#childticketmanager_category_placeholder").load(
+                    '{$baseurl}/ajax/childticketmanager_categorydropdown.php', // url
                     { // data
-                        'ticket':   $('[name=id]').val(),
+                        'ticket':   \$('[name=id]').val(),
                         'value':    cat,
-                        'type':     $('[name=type]').val(),
+                        'type':     \$('[name=type]').val(),
                         'template': {$is_template_shown},
                     },
                     ()=>{ // complete
@@ -134,28 +137,29 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
                     }
                 );
             };
-            $("main").on("glpi.tab.loaded", ()=>{
-                if($("[id^=tab-Ticket_main]").hasClass('show')){
+            // Selectors verified for GLPI 11: tab-Ticket_main, link_ticket_dropdowns
+            \$("main").on("glpi.tab.loaded", ()=>{
+                if(\$("[id^=tab-Ticket_main]").hasClass('show')){
 
                     // Insert UI to Linked Tickets section, inside Add+ (initially hidden)
-                    $("#link_ticket_dropdowns >:last").after({$ticket_html});
+                    \$("#link_ticket_dropdowns >:last").after({$ticket_html});
 
                     // Set initial state of our Category dropdown
-                    glpi_plugin_childticketmanager_updateCategoryDropdown($('[name=itilcategories_id]').val());
+                    glpi_plugin_childticketmanager_updateCategoryDropdown(\$('[name=itilcategories_id]').val());
 
                     // Refresh our Category dropdown on Ticket Type change
-                    $("select[id^=dropdown_type]").on('change', ()=>{
-                        glpi_plugin_childticketmanager_updateCategoryDropdown($('[name=childticketmanager_category]').val());
+                    \$("select[id^=dropdown_type]").on('change', ()=>{
+                        glpi_plugin_childticketmanager_updateCategoryDropdown(\$('[name=childticketmanager_category]').val());
                     });
 
                     // Create a new Child ticket using selected category's template
-                    $("#childticketmanager_create").on('click', (e)=>{
+                    \$("#childticketmanager_create").on('click', (e)=>{
                         e.preventDefault();
-                        $.post('/{$baseurl}/ajax/childticketmanager_create.php', // url
+                        \$.post('{$baseurl}/ajax/childticketmanager_create.php', // url
                         { // data
-                            'ticket':   $('[name=id]').val(),
-                            'category': $('[name=childticketmanager_category]').val(),
-                            'type':     $('[name=type]').val(),
+                            'ticket':   \$('[name=id]').val(),
+                            'category': \$('[name=childticketmanager_category]').val(),
+                            'type':     \$('[name=type]').val(),
                         },
                         (json)=>{ // success
                             if (json.tickets_id != undefined) {
@@ -167,11 +171,10 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
                             }
                         }, 'json');
                     });
-                }                
+                }
             });
             JAVASCRIPT;
         }
-    } 
+    }
 }
 plugin_childticketmanager_ticket_form_linked_tickets();
-
