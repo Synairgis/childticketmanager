@@ -55,7 +55,7 @@ class PluginChildticketmanagerConfig extends Config {
       return ($item instanceof Config) ? self::showForConfig() : true;
    }
 
-   static function showForConfig() { global $DB;
+   static function showForConfig() {
       if (!($canedit = Session::haveRight(self::$rightname, UPDATE))) {
          return false;
       }
