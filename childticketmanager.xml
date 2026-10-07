@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-   <name>Child Ticket Manager</name>
+   <n>Child Ticket Manager</n>
    <key>childticketmanager</key>
    <state>stable</state>
    <logo>https://raw.githubusercontent.com/Synairgis/childticketmanager/master/logo.png</logo>
@@ -8,10 +8,11 @@
       <short>
          <en><![CDATA[This plugin is meant to ease the management of parent-child tickets in GLPI. It adds an option to the standard linked ticket GLPI feature which can generate a new child ticket directly from the current one.]]></en>
          <fr><![CDATA[Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI. Il ajoute une option à la fonctionnalité de liaison de tickets native à GLPI permettant de créer un nouveau ticket enfant directement depuis le ticket courant.]]></fr>
+         <es><![CDATA[Este plugin facilita la gestión de tickets padre-hijo en GLPI. Añade una opción a la funcionalidad nativa de tickets vinculados que permite crear un nuevo ticket hijo directamente desde el ticket actual.]]></es>
       </short>
       <long>
          <en>
-            <![CDATA[ 
+            <![CDATA[
 This plugin is meant to ease the management of parent-child tickets in GLPI. It adds an option to the standard linked ticket GLPI feature which can generate a new child ticket directly from the current one.
 
 It allows to:
@@ -20,30 +21,47 @@ It allows to:
 2. Cascade the resolution/closure of child ticket upon parent's status change
 3. Easily apply a template to newly created child tickets
 
-Once installed, you can configure wether the plugin:
+Once installed, you can configure whether the plugin:
 
 - closes child tickets upon parent's closure;
 - resolves child tickets upon parent's resolution;
-- diplay a link to the selected category's template.
+- displays a link to the selected category's template.
             ]]>
          </en>
          <fr>
             <![CDATA[
 Ce plugin vise à simplifier la gestion des tickets parent-enfant dans GLPI. Il ajoute une option à la fonctionnalité de liaison de tickets native à GLPI permettant de créer un nouveau ticket enfant directement depuis le ticket courant.
 
-Il permet de :
+Il permet de :
 
 1. Facilement créer un ticket enfant à partir d'un ticket parent
 2. Résoudre et/ou fermer en cascade des tickets enfant au changement de statut du parent
 3. Appliquer un gabarit aux enfants nouvellement créés
 
-Une fois installé, vous pouvez configurer le plugin afin qu'il :
+Une fois installé, vous pouvez configurer le plugin afin qu'il :
 
 - ferme les tickets enfants lorsque le parent est clos;
 - résolve les tickets enfants lorsque le parent est résolu;
 - affiche un lien vers le gabarit de la catégorie sélectionnée.
             ]]>
          </fr>
+         <es>
+            <![CDATA[
+Este plugin facilita la gestión de tickets padre-hijo en GLPI. Añade una opción a la funcionalidad nativa de tickets vinculados que permite crear un nuevo ticket hijo directamente desde el ticket actual.
+
+Permite:
+
+1. Crear fácilmente un ticket hijo directamente desde un ticket padre
+2. Resolver y/o cerrar en cascada los tickets hijos al cambiar el estado del padre
+3. Aplicar una plantilla a los tickets hijos recién creados
+
+Una vez instalado, puedes configurar si el plugin:
+
+- cierra los tickets hijos cuando se cierra el padre;
+- resuelve los tickets hijos cuando se resuelve el padre;
+- muestra un enlace a la plantilla de la categoría seleccionada.
+            ]]>
+         </es>
       </long>
    </description>
    <homepage>https://github.com/Synairgis/childticketmanager</homepage>
@@ -55,6 +73,11 @@ Une fois installé, vous pouvez configurer le plugin afin qu'il :
       <author>TECLIB'</author>
    </authors>
    <versions>
+      <version>
+         <num>4.0.0</num>
+         <compatibility>11.0.X</compatibility>
+         <download_url>https://github.com/Synairgis/childticketmanager/releases/download/v4.0.0/childticketmanager-4.0.0.zip</download_url>
+      </version>
       <version>
          <num>3.0.2</num>
          <compatibility>10.0.X</compatibility>
@@ -84,6 +107,8 @@ Une fois installé, vous pouvez configurer le plugin afin qu'il :
    </versions>
    <langs>
       <lang>en_US</lang>
+      <lang>es_CO</lang>
+      <lang>es_ES</lang>
       <lang>fr_CA</lang>
       <lang>fr_FR</lang>
    </langs>
@@ -91,9 +116,18 @@ Une fois installé, vous pouvez configurer le plugin afin qu'il :
    <tags>
       <en>
          <tag>Ticket</tag>
+         <tag>parent</tag>
+         <tag>child</tag>
       </en>
+      <es>
+         <tag>Ticket</tag>
+         <tag>padre</tag>
+         <tag>hijo</tag>
+      </es>
       <fr>
          <tag>Ticket</tag>
+         <tag>parent</tag>
+         <tag>enfant</tag>
       </fr>
    </tags>
    <screenshots>

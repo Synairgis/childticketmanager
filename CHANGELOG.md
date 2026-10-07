@@ -1,3 +1,26 @@
+## 4.0.0
+
+### Features
+
+- GLPI 11.0.X compatibility (requires GLPI >= 11.0).
+
+### Breaking Changes
+
+- Dropped support for GLPI 10.0.X. Use version 3.0.2 for GLPI 10.
+
+### Migration
+
+- Removed `Glpi\Toolbox\Sanitizer` usage (removed in GLPI 11). GLPI ORM now handles sanitization internally.
+- Removed deprecated `$AJAX_INCLUDE` / `inc/includes.php` bootstrap (automatic in GLPI 11).
+- Removed deprecated `Hooks::CSRF_COMPLIANT` hook.
+- Replaced deprecated `Plugin::getWebDir()` with literal plugin path.
+- Updated AJAX JSON Content-Type headers.
+- Replaced FontAwesome icons with Tabler Icons (`ti-*`) throughout.
+- Fixed `sr-only` → `visually-hidden` (Bootstrap 5).
+- Fixed `requesttypes_id` bug in ITILFollowup (was using ticket ID instead of request type ID).
+- Added Spanish (es_ES, es_CO) locale.
+- Updated `check_prerequisites()` to use `Plugin::messageIncompatible()`.
+
 ## 3.0.2
 
 ### Bugfix

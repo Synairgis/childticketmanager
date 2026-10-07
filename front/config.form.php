@@ -30,7 +30,6 @@
  * Redirects to the Configuration tab of the Plugin
  */
 
-require_once ('../../../inc/includes.php');
 
 // Check if current user have config right
 Session::checkRight("config", UPDATE);
