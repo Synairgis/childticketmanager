@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-   <n>Child Ticket Manager</n>
+   <name>Child Ticket Manager</name>
    <key>childticketmanager</key>
    <state>stable</state>
    <logo>https://raw.githubusercontent.com/Synairgis/childticketmanager/master/logo.png</logo>
@@ -75,6 +75,7 @@ Una vez instalado, puedes configurar si el plugin:
    <versions>
       <version>
          <num>4.0.0</num>
+         <compatibility>12.0.X</compatibility>
          <compatibility>11.0.X</compatibility>
          <download_url>https://github.com/Synairgis/childticketmanager/releases/download/v4.0.0/childticketmanager-4.0.0.zip</download_url>
       </version>
