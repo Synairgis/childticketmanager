@@ -1,6 +1,6 @@
 # ChildTicket Manager GLPI Plugin
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/synairgis/childticketmanager/total?style=plastic)
-![Static Badge](https://img.shields.io/badge/GLPI-v11-blue?style=plastic)
+![Static Badge](https://img.shields.io/badge/GLPI-v11_v12-blue?style=plastic)
 
 ![Logo](logo.png)
 

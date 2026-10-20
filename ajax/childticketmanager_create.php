@@ -31,9 +31,9 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-$ticket_id      = filter_var($_POST['ticket'], FILTER_VALIDATE_INT) ?: 0;
-$type           = filter_var($_POST['type'], FILTER_VALIDATE_INT) ?: Ticket::DEMAND_TYPE;
-$category_id    = filter_var($_POST['category'], FILTER_VALIDATE_INT) ?: 0;
+$ticket_id      = filter_var($_POST['ticket']??0, FILTER_VALIDATE_INT) ?: 0;
+$type           = filter_var($_POST['type']??Ticket::DEMAND_TYPE, FILTER_VALIDATE_INT) ?: Ticket::DEMAND_TYPE;
+$category_id    = filter_var($_POST['category']??0, FILTER_VALIDATE_INT) ?: 0;
 
 if (($parent = Ticket::getById($ticket_id)) === false) {
     echo json_encode(['error' => 'Ticket not found']);

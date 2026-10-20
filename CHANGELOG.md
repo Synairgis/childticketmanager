@@ -21,6 +21,11 @@
 - Added Spanish (es_ES, es_CO) locale.
 - Updated `check_prerequisites()` to use `Plugin::messageIncompatible()`.
 
+### Contribution
+
+- Thanks to [giovanny07](https://github.com/giovanny07) for his help on this long overdue update!
+
+
 ## 3.0.2
 
 ### Bugfix

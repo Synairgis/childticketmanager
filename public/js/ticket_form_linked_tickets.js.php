@@ -30,6 +30,7 @@ header('Content-type: application/javascript');
 
 function plugin_childticketmanager_ticket_form_linked_tickets()
 {
+    global $CFG_GLPI;
     // On ticket form only
     // HTTP_REFERER may be absent depending on browser/proxy strict-origin policy
     if (!isset($_SERVER['HTTP_REFERER'])) return;
@@ -46,7 +47,7 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
 
             // Variables to insert in the Heredoc sections.
             // Plugin::getWebDir() is deprecated in GLPI 11 -- use literal path instead.
-            $baseurl = '/plugins/childticketmanager';
+            $baseurl = $CFG_GLPI['url_base'].'/plugins/childticketmanager';
             $typename = PluginChildticketmanagerConfig::getTypeName();
             $template_btn_label = __("Display Template",'childticketmanager');
             $child_label = __('+Child', 'childticketmanager');
@@ -102,9 +103,9 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             var glpi_plugin_childticketmanager_updateTemplateId = function (cat) {
                 \$.post('{$baseurl}/ajax/childticketmanager_template.php', // url
                 { // data
-                    'ticket':   \$('[name=id]').val(),
-                    'category': (cat === undefined ? \$('[name=childticketmanager_category]').val() : cat),
-                    'type':     \$('[name=type]').val(),
+                    ticket:   \$('#itil-form [name=id]').val(),
+                    category: (cat === undefined ? \$('[name=childticketmanager_category]').val() : cat),
+                    type:     \$('#itil-form [name=type]').val(),
                 },
                 (json)=>{ // success
                     if (json.template_id === undefined || json.template_id <= 0) {
@@ -112,7 +113,7 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
                         \$("#childticketmanager_showtemplate").attr('href', '#');
                     } else {
                         \$("#childticketmanager_showtemplate").show();
-                        \$("#childticketmanager_showtemplate").attr('href', "front/tickettemplate.form.php?id=" + json.template_id);
+                        \$("#childticketmanager_showtemplate").attr('href', "tickettemplate.form.php?id=" + json.template_id);
                     }
                 }, 'json');
             };
@@ -125,10 +126,10 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
                 \$("#childticketmanager_category_placeholder").load(
                     '{$baseurl}/ajax/childticketmanager_categorydropdown.php', // url
                     { // data
-                        'ticket':   \$('[name=id]').val(),
-                        'value':    cat,
-                        'type':     \$('[name=type]').val(),
-                        'template': {$is_template_shown},
+                        ticket:   \$('#itil-form [name=id]').val(),
+                        value:    cat,
+                        type:     \$('#itil-form [name=type]').val(),
+                        template: {$is_template_shown},
                     },
                     ()=>{ // complete
                         if ({$is_template_shown}) {
@@ -141,8 +142,8 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             \$("main").on("glpi.tab.loaded", ()=>{
                 if(\$("[id^=tab-Ticket_main]").hasClass('show')){
 
-                    // Insert UI to Linked Tickets section, inside Add+ (initially hidden)
-                    \$("#link_ticket_dropdowns >:last").after({$ticket_html});
+                    // Insert UI to Linked section, inside Add+ (initially hidden)
+                    \$("#link_itilobject_dropdowns >:last").after({$ticket_html});
 
                     // Set initial state of our Category dropdown
                     glpi_plugin_childticketmanager_updateCategoryDropdown(\$('[name=itilcategories_id]').val());
@@ -157,9 +158,9 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
                         e.preventDefault();
                         \$.post('{$baseurl}/ajax/childticketmanager_create.php', // url
                         { // data
-                            'ticket':   \$('[name=id]').val(),
-                            'category': \$('[name=childticketmanager_category]').val(),
-                            'type':     \$('[name=type]').val(),
+                            ticket:   \$('#itil-form [name=id]').val(),
+                            category: \$('[name=childticketmanager_category]').val(),
+                            type:     \$('#itil-form [name=type]').val(),
                         },
                         (json)=>{ // success
                             if (json.tickets_id != undefined) {

@@ -70,8 +70,9 @@ function plugin_childticketmanager_ticket_update(Ticket $ticket)
    $do_solve = $conf['childticketmanager_resolve_child'];
    if (!$do_close && !$do_solve) return; // no actions to do
 
-   foreach ($DB->request(Ticket_Ticket::getTable(),[
-      'FIELDS' => ['tickets_id_1 AS id'],
+   foreach ($DB->request([
+      'SELECT' => ['tickets_id_1 AS id'],
+      'FROM' => Ticket_Ticket::getTable(),
       'WHERE'  => [
          'tickets_id_2' => $ticket->getID(),
          'link'         => Ticket_Ticket::SON_OF,
