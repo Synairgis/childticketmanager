@@ -49,9 +49,10 @@ function plugin_childticketmanager_ticket_form_linked_tickets()
             // Plugin::getWebDir() is deprecated in GLPI 11 -- use literal path instead.
             $baseurl = $CFG_GLPI['url_base'].'/plugins/childticketmanager';
             $typename = PluginChildticketmanagerConfig::getTypeName();
-            $template_btn_label = __("Display Template",'childticketmanager');
-            $child_label = __('+Child', 'childticketmanager');
-            $child_tooltip = __('Create child ticket from category', 'childticketmanager');
+            // These are used in backticks so make sure translation cannot inject ${} expandable pattern
+            $template_btn_label = str_replace('$', '\$', __("Display Template",'childticketmanager'));
+            $child_label = str_replace('$', '\$', __('+Child', 'childticketmanager'));
+            $child_tooltip = str_replace('$', '\$', __('Create child ticket from category', 'childticketmanager'));
 
             // Configuration settings
             $conf = PluginChildticketmanagerConfig::getConfig();

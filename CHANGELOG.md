@@ -1,3 +1,16 @@
+## 4.0.1
+
+### Security
+
+- Fix authorization checks when creating child tickets.
+- Fix entity visibility checks on ticket categories.
+- Fix potential javascript interpolation from translations.
+
+### Fixed
+
+- Remove deprecated login check code
+- Add validation checks when creating child tickets
+
 ## 4.0.0
 
 ### Features

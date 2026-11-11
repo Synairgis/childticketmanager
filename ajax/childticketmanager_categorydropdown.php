@@ -29,15 +29,13 @@
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkLoginUser();
-
 $ticket_id      = filter_var($_POST['ticket']??0, FILTER_VALIDATE_INT) ?: 0;
 $onchange       = filter_var($_POST['template']??0, FILTER_VALIDATE_INT) ? "glpi_plugin_childticketmanager_updateTemplateId($(this).val());" : '';
 $type           = filter_var($_POST['type']??0, FILTER_VALIDATE_INT) ?: Ticket::DEMAND_TYPE;
 $category_id    = filter_var($_POST['value']??0, FILTER_VALIDATE_INT) ?: 0;
 
-$entity = -1;
-if (($ticket = Ticket::getById($ticket_id)) != false) {
+$entity = Session::getActiveEntities();
+if (($ticket = Ticket::getById($ticket_id)) != false && $ticket->canViewItem()) {
     $entity = $ticket->fields['entities_id'];
 }
 

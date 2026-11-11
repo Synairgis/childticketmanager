@@ -29,11 +29,9 @@
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkLoginUser();
-
 $ticket_id      = filter_var($_POST['ticket']??0, FILTER_VALIDATE_INT) ?: 0;
 
-if (($ticket = Ticket::getById($ticket_id)) === false) {
+if (($ticket = Ticket::getById($ticket_id)) === false || !$ticket->canViewItem()) {
     echo json_encode(['template_id' => 0]);
     return;
 }

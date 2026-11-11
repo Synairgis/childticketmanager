@@ -29,13 +29,11 @@
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkLoginUser();
-
 $ticket_id      = filter_var($_POST['ticket']??0, FILTER_VALIDATE_INT) ?: 0;
 $type           = filter_var($_POST['type']??Ticket::DEMAND_TYPE, FILTER_VALIDATE_INT) ?: Ticket::DEMAND_TYPE;
 $category_id    = filter_var($_POST['category']??0, FILTER_VALIDATE_INT) ?: 0;
 
-if (($parent = Ticket::getById($ticket_id)) === false) {
+if (($parent = Ticket::getById($ticket_id)) === false || !$parent->canViewItem()) {
     echo json_encode(['error' => 'Ticket not found']);
     return;
 }
@@ -68,6 +66,12 @@ if (!isset($input['_actors']['requester'])) {
 // Set values
 $input['itilcategories_id'] = $category_id;
 $input['_add'] = true; // This adds the standard redirect message
+
+if (!$child->canCreateItem()) {
+    echo json_encode(['error' => 'Cannot create child ticket']);
+    return;
+}
+
 $child->add($input);
 (new Ticket_Ticket)->add([
     'tickets_id_1'  => $child->getID(),

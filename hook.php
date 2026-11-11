@@ -78,8 +78,7 @@ function plugin_childticketmanager_ticket_update(Ticket $ticket)
          'link'         => Ticket_Ticket::SON_OF,
       ]
    ]) ?: [] as $row) {
-      $child = Ticket::getById($row['id']);
-      if (!$child->canUpdateItem()) continue;
+      if (($child = Ticket::getById($row['id'])) === false || !$child->canUpdateItem()) continue;
       if ($do_solve && $ticket->isSolved() && $child->isNotSolved()) {
          (new ITILSolution)->add([
             'itemtype'  => Ticket::getType(),
